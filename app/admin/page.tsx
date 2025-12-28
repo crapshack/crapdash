@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { PageHeader } from '@/components/layout/page-header';
 import { Separator } from '@/components/ui/separator';
-import { Plus, Home } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { ArrowLeftIcon } from '@/components/ui/arrow-left';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { CategoryList } from '@/components/admin/category-list';
 import { ServiceList } from '@/components/admin/service-list';
 import { CategoryFormModal } from '@/components/admin/category-form-modal';
@@ -14,7 +16,6 @@ import { ServiceFormModal } from '@/components/admin/service-form-modal';
 import type { Category, Service } from '@/lib/types';
 
 export default function AdminPage() {
-  const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -96,20 +97,25 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <PageHeader
-          title="Admin Dashboard"
-          description="Manage categories and services"
-        >
-          <Button variant="outline" onClick={() => router.push('/')}>
-            <Home className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </PageHeader>
-      </div>
+    <>
+      <PageHeader
+        title="Crapdash Admin"
+        description="Manage categories and services"
+      >
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="icon" asChild>
+              <Link href="/">
+                <ArrowLeftIcon size={14} />
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Back to Dashboard</TooltipContent>
+        </Tooltip>
+      </PageHeader>
 
-      <div className="space-y-8">
+      <main className="container mx-auto px-4 py-8">
+        <div className="space-y-8">
         {/* Categories Section */}
         <section>
           <Card>
@@ -191,6 +197,7 @@ export default function AdminPage() {
         categories={categories}
         onSuccess={handleRefresh}
       />
-    </main>
+      </main>
+    </>
   );
 }

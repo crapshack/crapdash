@@ -7,9 +7,5 @@ export default async function Page() {
     getServices(),
   ]);
 
-  return (
-    <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
-      <DashboardClient categories={categories} services={services} />
-    </main>
-  );
+  return <DashboardClient categories={categories} services={services} />;
 }

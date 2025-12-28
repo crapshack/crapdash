@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Settings } from 'lucide-react';
+import Link from 'next/link';
+import { SettingsIcon } from '@/components/ui/settings';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { PageHeader } from '@/components/layout/page-header';
 import { CategorySection } from './category-section';
 import { SearchBar } from './search-bar';
@@ -42,18 +44,26 @@ export function DashboardClient({ categories, services }: DashboardClientProps) 
   }, [searchQuery, categories, services]);
 
   return (
-    <div className="space-y-8">
-      <PageHeader title="Crapdash">
+    <>
+      <PageHeader
+        title="Crapdash"
+        description="Dashboard for u"
+        >
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
-        <a href="/admin">
-          <Button variant="outline">
-            <Settings className="h-4 w-4 mr-2" />
-            Admin
-          </Button>
-        </a>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="icon" asChild>
+              <Link href="/admin">
+                <SettingsIcon size={14} />
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Settings</TooltipContent>
+        </Tooltip>
       </PageHeader>
 
-      {filteredData.categories.length === 0 ? (
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+        {filteredData.categories.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground">No services found matching your search.</p>
         </div>
@@ -73,6 +83,7 @@ export function DashboardClient({ categories, services }: DashboardClientProps) 
           })}
         </div>
       )}
-    </div>
+      </main>
+    </>
   );
 }
