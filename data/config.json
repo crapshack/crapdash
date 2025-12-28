@@ -1,0 +1,72 @@
+{
+  "categories": [
+    {
+      "id": "monitoring",
+      "name": "Monitoring",
+      "description": "System monitoring and observability tools",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    },
+    {
+      "id": "media",
+      "name": "Media",
+      "description": "Media streaming and management services",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    },
+    {
+      "id": "network",
+      "name": "Network",
+      "description": "Network infrastructure and management",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    }
+  ],
+  "services": [
+    {
+      "id": "grafana",
+      "name": "Grafana",
+      "description": "Analytics and monitor",
+      "url": "http://localhost:3000",
+      "categoryId": "monitoring",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    },
+    {
+      "id": "prometheus",
+      "name": "Prometheus",
+      "description": "Time series database and monitoring system",
+      "url": "http://localhost:9090",
+      "categoryId": "monitoring",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    },
+    {
+      "id": "plex",
+      "name": "Plex",
+      "description": "Media server for streaming your content",
+      "url": "http://localhost:32400",
+      "categoryId": "media",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    },
+    {
+      "id": "jellyfin",
+      "name": "Jellyfin",
+      "description": "Free media server alternative",
+      "url": "http://localhost:8096",
+      "categoryId": "media",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    },
+    {
+      "id": "pfsense",
+      "name": "pfSense",
+      "description": "Firewall and router platform",
+      "url": "https://192.168.1.1",
+      "categoryId": "network",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    },
+    {
+      "id": "pihole",
+      "name": "Pi-hole",
+      "description": "Network-wide ad blocking",
+      "url": "http://192.168.1.2/admin",
+      "categoryId": "network",
+      "createdAt": "2025-12-28T00:00:00.000Z"
+    }
+  ]
+}
