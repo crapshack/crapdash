@@ -87,7 +87,7 @@ app/
   globals.css      - Global styles and theme variables
 components/
   ui/              - shadcn/ui components (Button, Card, Input, etc.)
-  *.tsx            - Feature components (ServiceCard, CategorySection, etc.)
+  *.tsx            - Feature components (ServiceCard, CategoryLayout, etc.)
 lib/
   utils.ts         - Utility functions (cn helper)
   types.ts         - TypeScript type definitions for Category and Service
