@@ -19,7 +19,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
           <div className="flex items-center gap-3">
             <ServiceIcon service={service} size="md" />
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-lg">{service.name}</CardTitle>
+              <CardTitle className="text-lg line-clamp-1">{service.name}</CardTitle>
               <CardDescription className="line-clamp-1 mt-1">{service.description}</CardDescription>
             </div>
           </div>

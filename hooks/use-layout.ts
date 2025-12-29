@@ -1,28 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import type { DashboardLayout } from '@/lib/types';
+import { useState, useCallback } from 'react';
+import { setCookie } from '@/lib/utils';
+import { LAYOUT_COOKIE_NAME, DEFAULT_LAYOUT, type DashboardLayout } from '@/lib/types';
 
-const STORAGE_KEY = 'dashboard-layout';
-const DEFAULT_LAYOUT: DashboardLayout = 'rows';
+const STORAGE_KEY = LAYOUT_COOKIE_NAME;
 
-export function useLayout() {
-  const [layout, setLayoutState] = useState<DashboardLayout>(DEFAULT_LAYOUT);
-  const [mounted, setMounted] = useState(false);
+interface UseLayoutOptions {
+  initialLayout?: DashboardLayout;
+}
 
-  useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem(STORAGE_KEY) as DashboardLayout | null;
-    if (stored === 'rows' || stored === 'columns') {
-      setLayoutState(stored);
-    }
-  }, []);
+export function useLayout({ initialLayout }: UseLayoutOptions = {}) {
+  const [layout, setLayoutState] = useState<DashboardLayout>(initialLayout ?? DEFAULT_LAYOUT);
 
   const setLayout = useCallback((newLayout: DashboardLayout) => {
     setLayoutState(newLayout);
     localStorage.setItem(STORAGE_KEY, newLayout);
+    setCookie(LAYOUT_COOKIE_NAME, newLayout);
   }, []);
 
-  return { layout, setLayout, mounted };
+  return { layout, setLayout };
 }
-

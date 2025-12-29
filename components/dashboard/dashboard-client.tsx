@@ -12,17 +12,18 @@ import { CategoryColumn } from './category-column';
 import { SearchBar } from './search-bar';
 import { LayoutToggle } from './layout-toggle';
 import { useLayout } from '@/hooks/use-layout';
-import type { Category, Service } from '@/lib/types';
+import type { Category, Service, DashboardLayout } from '@/lib/types';
 
 interface DashboardClientProps {
   categories: Category[];
   services: Service[];
+  initialLayout: DashboardLayout;
 }
 
-export function DashboardClient({ categories, services }: DashboardClientProps) {
+export function DashboardClient({ categories, services, initialLayout }: DashboardClientProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { layout, setLayout, mounted } = useLayout();
+  const { layout, setLayout } = useLayout({ initialLayout });
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -64,10 +65,10 @@ export function DashboardClient({ categories, services }: DashboardClientProps) 
   return (
     <>
       <PageHeader
-        title="Crapdash"
+        title="crapdash"
         >
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
-        <LayoutToggle layout={layout} onLayoutChange={setLayout} mounted={mounted} />
+        <LayoutToggle layout={layout} onLayoutChange={setLayout} />
         <ThemeToggle />
         <Tooltip>
           <TooltipTrigger asChild>
@@ -102,7 +103,7 @@ export function DashboardClient({ categories, services }: DashboardClientProps) 
             })}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredData.categories.map((category) => {
               const categoryServices = filteredData.services.filter(
                 (s) => s.categoryId === category.id

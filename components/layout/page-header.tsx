@@ -20,7 +20,7 @@ export function PageHeader({ title, description, children }: PageHeaderProps) {
               className="rounded-xl shadow-md"
             />
             <div>
-              <h1 className="text-4xl font-bold text-gradient-title">{title}</h1>
+              <h1 className="text-4xl font-bold font-mono text-gradient-title">{title}</h1>
               {description && (
                 <p className="text-muted-foreground mt-2">{description}</p>
               )}

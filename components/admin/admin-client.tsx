@@ -88,7 +88,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
   return (
     <>
       <PageHeader
-        title="Crapdash Admin"
+        title="crapdash admin"
       >
         <ThemeToggle />
         <Tooltip>
@@ -190,4 +190,3 @@ export function AdminClient({ categories: initialCategories, services: initialSe
     </>
   );
 }
-

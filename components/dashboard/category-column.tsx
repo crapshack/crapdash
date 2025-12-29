@@ -1,4 +1,5 @@
 import { ServiceCard } from './service-card';
+import { CategoryIcon } from '@/components/ui/category-icon';
 import type { Category, Service } from '@/lib/types';
 
 interface CategoryColumnProps {
@@ -13,7 +14,8 @@ export function CategoryColumn({ category, services }: CategoryColumnProps) {
 
   return (
     <div className="flex flex-col">
-      <h2 className="text-xl font-bold text-foreground mb-4 pb-2 border-b border-border">
+      <h2 className="flex items-center gap-2 text-xl font-bold text-foreground mb-4 pb-2 border-b border-border">
+        <CategoryIcon name={category.icon} className="h-5 w-5" />
         {category.name}
       </h2>
       <div className="flex flex-col gap-3">

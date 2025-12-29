@@ -15,18 +15,9 @@ import type { DashboardLayout } from '@/lib/types';
 interface LayoutToggleProps {
   layout: DashboardLayout;
   onLayoutChange: (layout: DashboardLayout) => void;
-  mounted: boolean;
 }
 
-export function LayoutToggle({ layout, onLayoutChange, mounted }: LayoutToggleProps) {
-  if (!mounted) {
-    return (
-      <Button variant="outline" size="icon-lg" disabled>
-        <span className="h-[18px] w-[18px]" />
-      </Button>
-    );
-  }
-
+export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
   return (
     <DropdownMenu>
       <Tooltip>
@@ -54,4 +45,3 @@ export function LayoutToggle({ layout, onLayoutChange, mounted }: LayoutTogglePr
     </DropdownMenu>
   );
 }
-

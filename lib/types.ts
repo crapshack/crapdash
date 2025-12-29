@@ -1,8 +1,12 @@
 export type DashboardLayout = 'rows' | 'columns';
 
+export const LAYOUT_COOKIE_NAME = 'dashboard-layout';
+export const DEFAULT_LAYOUT: DashboardLayout = 'rows';
+
 export interface Category {
   id: string;
   name: string;
+  icon?: string;
 }
 
 export interface Service {

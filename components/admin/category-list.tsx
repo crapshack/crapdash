@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { CategoryIcon } from '@/components/ui/category-icon';
 import { Pencil, Trash2 } from 'lucide-react';
 import { DeleteConfirmDialog } from './delete-confirm-dialog';
 import { deleteCategory } from '@/lib/actions';
@@ -60,7 +61,18 @@ export function CategoryList({ categories, services, onEdit, onDeleted }: Catego
             <Card key={category.id}>
               <CardHeader>
                 <div className="flex items-start justify-between">
-                  <CardTitle className="text-lg">{category.name}</CardTitle>
+                  <div className="flex items-center gap-3">
+                    {category.icon ? (
+                      <div className="flex items-center justify-center w-10 h-10 rounded-lg border bg-muted/50 shrink-0">
+                        <CategoryIcon name={category.icon} className="h-5 w-5" />
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center w-10 h-10 rounded-lg border border-dashed bg-muted/30 shrink-0">
+                        <span className="text-xs text-muted-foreground">—</span>
+                      </div>
+                    )}
+                    <CardTitle className="text-lg">{category.name}</CardTitle>
+                  </div>
                   <Badge variant="secondary">{serviceCount} services</Badge>
                 </div>
               </CardHeader>
