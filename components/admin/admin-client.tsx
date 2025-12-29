@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -11,6 +11,7 @@ import { ArrowLeftIcon } from '@/components/ui/arrow-left';
 import { AnimateIcon } from '@/components/ui/animate-icon';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
+import { SearchBar } from '@/components/dashboard/search-bar';
 import { CategoryList } from '@/components/admin/category-list';
 import { ServiceList } from '@/components/admin/service-list';
 import { CategoryFormModal } from '@/components/admin/category-form-modal';
@@ -30,6 +31,41 @@ export function AdminClient({ categories: initialCategories, services: initialSe
   const [serviceModalOpen, setServiceModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | undefined>();
   const [editingService, setEditingService] = useState<Service | undefined>();
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const filteredData = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return { categories, services };
+    }
+
+    const query = searchQuery.toLowerCase();
+    const filteredCategories = categories.filter(
+      (category) => category.name.toLowerCase().includes(query)
+    );
+    const filteredServices = services.filter(
+      (service) =>
+        service.name.toLowerCase().includes(query) ||
+        service.description.toLowerCase().includes(query)
+    );
+
+    return {
+      categories: filteredCategories,
+      services: filteredServices,
+    };
+  }, [searchQuery, categories, services]);
 
   const fetchData = async () => {
     try {
@@ -92,6 +128,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
       <PageHeader
         title="crapdash admin"
       >
+        <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <ThemeToggle />
         <Tooltip>
           <TooltipTrigger asChild>
@@ -139,9 +176,13 @@ export function AdminClient({ categories: initialCategories, services: initialSe
                       Add Category
                     </Button>
                   </Empty>
+                ) : filteredData.categories.length === 0 ? (
+                  <p className="text-center py-8 text-muted-foreground">
+                    No categories found matching your search.
+                  </p>
                 ) : (
                   <CategoryList
-                    categories={categories}
+                    categories={filteredData.categories}
                     services={services}
                     onEdit={handleEditCategory}
                     onDeleted={handleRefresh}
@@ -185,9 +226,13 @@ export function AdminClient({ categories: initialCategories, services: initialSe
                       Add Service
                     </Button>
                   </Empty>
+                ) : filteredData.services.length === 0 ? (
+                  <p className="text-center py-8 text-muted-foreground">
+                    No services found matching your search.
+                  </p>
                 ) : (
                   <ServiceList
-                    services={services}
+                    services={filteredData.services}
                     categories={categories}
                     onEdit={handleEditService}
                     onDeleted={handleRefresh}

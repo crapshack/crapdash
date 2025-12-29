@@ -92,7 +92,7 @@ export function ServiceList({ services, categories, onEdit, onDeleted }: Service
                   variant="outline"
                   size="sm"
                   onClick={() => handleDeleteClick(service)}
-                  className="flex-1 text-destructive hover:text-destructive"
+                  className="flex-1 text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
                   <Trash2 className="h-4 w-4" />
                   Delete

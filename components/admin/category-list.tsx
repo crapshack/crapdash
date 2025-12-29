@@ -91,7 +91,7 @@ export function CategoryList({ categories, services, onEdit, onDeleted }: Catego
                     variant="outline"
                     size="sm"
                     onClick={() => handleDeleteClick(category)}
-                    className="flex-1 text-destructive hover:text-destructive"
+                    className="flex-1 text-destructive hover:text-destructive hover:bg-destructive/10"
                   >
                     <Trash2 className="h-4 w-4" />
                     Delete
@@ -117,13 +117,9 @@ export function CategoryList({ categories, services, onEdit, onDeleted }: Catego
           itemType="category"
           onConfirm={handleDeleteConfirm}
           isDeleting={isDeleting}
+          serviceCount={getServiceCount(categoryToDelete.id)}
+          error={error}
         />
-      )}
-
-      {error && (
-        <div className="mt-4 p-3 bg-destructive/10 text-destructive text-sm rounded-md">
-          {error}
-        </div>
       )}
     </>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import { AlertCircle } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,6 +19,8 @@ interface DeleteConfirmDialogProps {
   itemType: 'category' | 'service';
   onConfirm: () => Promise<void>;
   isDeleting: boolean;
+  serviceCount?: number;
+  error?: string | null;
 }
 
 export function DeleteConfirmDialog({
@@ -27,26 +30,46 @@ export function DeleteConfirmDialog({
   itemType,
   onConfirm,
   isDeleting,
+  serviceCount = 0,
+  error,
 }: DeleteConfirmDialogProps) {
+  const hasServices = serviceCount > 0;
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete {itemType}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete <strong>{itemName}</strong>? This action cannot be
-            undone.
+            {hasServices ? (
+              <>
+                <strong>{itemName}</strong> has {serviceCount} associated {serviceCount === 1 ? 'service' : 'services'}. 
+                Remove all service associations before deleting this category.
+              </>
+            ) : (
+              <>
+                Are you sure you want to delete <strong>{itemName}</strong>? This action cannot be undone.
+              </>
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
+
+        {error && (
+          <div className="flex items-start gap-3 rounded-md border border-destructive/50 bg-destructive/10 p-3 text-xs text-destructive">
+            <AlertCircle className="mt-0.5 h-3 w-3 shrink-0" />
+            <p>{error}</p>
+          </div>
+        )}
+
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
           <AlertDialogAction
+            variant="destructive"
             onClick={(e) => {
               e.preventDefault();
               onConfirm();
             }}
-            disabled={isDeleting}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            disabled={isDeleting || hasServices}
           >
             {isDeleting ? 'Deleting...' : 'Delete'}
           </AlertDialogAction>
