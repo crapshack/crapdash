@@ -17,7 +17,7 @@ export function PageHeader({ title, description, children }: PageHeaderProps) {
               alt="Compy"
               width={56}
               height={56}
-              className="rounded-xl shadow-md"
+              className=""
             />
             <div>
               <h1 className="text-4xl font-bold font-mono text-gradient-title">{title}</h1>
