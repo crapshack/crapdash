@@ -14,7 +14,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
       rel="noopener noreferrer"
       className="block transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
     >
-      <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+      <Card size="sm" className="h-full hover:shadow-lg transition-shadow cursor-pointer">
         <CardHeader>
           <div className="flex items-center gap-3">
             <ServiceIcon service={service} size="md" />

@@ -9,7 +9,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { DashboardLayout } from '@/lib/types';
 
 interface LayoutToggleProps {
@@ -20,16 +19,11 @@ interface LayoutToggleProps {
 export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
   return (
     <DropdownMenu>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon-lg">
-              {layout === 'rows' ? <Rows3 size={18} /> : <Columns3 size={18} />}
-            </Button>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">Layout</TooltipContent>
-      </Tooltip>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon-lg">
+          {layout === 'rows' ? <Rows3 size={18} /> : <Columns3 size={18} />}
+        </Button>
+      </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuRadioGroup value={layout} onValueChange={(v) => onLayoutChange(v as DashboardLayout)}>
           <DropdownMenuRadioItem value="rows">

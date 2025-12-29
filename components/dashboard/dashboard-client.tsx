@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { SettingsIcon } from '@/components/ui/settings';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { PageHeader } from '@/components/layout/page-header';
 import { CategoryLayout } from './category-layout';
 import { SearchBar } from './search-bar';
@@ -69,16 +68,11 @@ export function DashboardClient({ categories, services, initialLayout }: Dashboa
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <LayoutToggle layout={layout} onLayoutChange={setLayout} />
         <ThemeToggle />
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="outline" size="icon-lg" asChild>
-              <Link href="/admin">
-                <SettingsIcon size={18} />
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Settings</TooltipContent>
-        </Tooltip>
+        <Button variant="outline" size="icon-lg" asChild>
+          <Link href="/admin">
+            <SettingsIcon size={18} />
+          </Link>
+        </Button>
       </PageHeader>
 
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
