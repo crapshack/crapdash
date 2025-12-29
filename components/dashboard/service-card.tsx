@@ -12,7 +12,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
       href={service.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
+      className="block transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
     >
       <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
         <CardHeader>
