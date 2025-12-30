@@ -69,7 +69,9 @@ export function DashboardClient({ categories, services, initialLayout }: Dashboa
         title="crapdash"
         >
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
-        <LayoutToggle layout={layout} onLayoutChange={setLayout} />
+        <div className="hidden sm:block">
+          <LayoutToggle layout={layout} onLayoutChange={setLayout} />
+        </div>
         <ThemeToggle />
         <AnimateIcon animateOnHover asChild>
           <Button variant="outline" size="icon-lg" asChild>
