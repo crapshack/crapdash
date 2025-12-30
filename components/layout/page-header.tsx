@@ -11,8 +11,8 @@ export function PageHeader({ title, description, children }: PageHeaderProps) {
   return (
     <div className="w-full bg-muted border-b border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-4 shrink-0">
             <Link href="/">
               <Image
                 src="/compy.png"
@@ -30,7 +30,7 @@ export function PageHeader({ title, description, children }: PageHeaderProps) {
             </div>
           </div>
           {children && (
-            <div className="flex items-center gap-3 flex-wrap">{children}</div>
+            <div className="flex items-center gap-2 md:gap-3 w-full md:w-auto">{children}</div>
           )}
         </div>
       </div>

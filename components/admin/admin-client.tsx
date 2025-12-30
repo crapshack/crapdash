@@ -143,7 +143,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
         </Tooltip>
       </PageHeader>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
         <div className="space-y-10">
           {/* Categories Section */}
           <section>

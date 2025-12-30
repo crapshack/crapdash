@@ -13,7 +13,7 @@ interface SearchBarProps {
 export const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
   function SearchBar({ value, onChange }, ref) {
     return (
-      <div className="relative flex-1 min-w-0 sm:flex-none sm:w-auto sm:max-w-md">
+      <div className="relative flex-1 min-w-0 md:max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
         <Input
           ref={ref}
