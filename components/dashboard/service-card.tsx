@@ -20,7 +20,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
             <ServiceIcon service={service} size="md" />
             <div className="flex-1 min-w-0">
               <CardTitle className="text-lg line-clamp-1">{service.name}</CardTitle>
-              <div className="relative mt-1 h-4 overflow-hidden">
+              <div className="relative h-4 overflow-hidden">
                 <CardDescription className="line-clamp-1 transition-transform duration-500 ease-out group-hover:-translate-y-full">
                   {service.description}
                 </CardDescription>
