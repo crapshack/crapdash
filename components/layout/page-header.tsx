@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface PageHeaderProps {
   title: string;
@@ -8,17 +9,19 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, children }: PageHeaderProps) {
   return (
-    <div className="w-full bg-muted/50 border-b border-border">
+    <div className="w-full bg-muted border-b border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <Image
-              src="/compy.png"
-              alt="Compy"
-              width={56}
-              height={56}
-              className=""
-            />
+            <Link href="/">
+              <Image
+                src="/compy.png"
+                alt="Compy"
+                width={56}
+                height={56}
+                className="hover:scale-105 transition-transform"
+              />
+            </Link>
             <div>
               <h1 className="text-4xl font-bold font-mono text-gradient-title">{title}</h1>
               {description && (

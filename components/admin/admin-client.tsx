@@ -3,9 +3,8 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { PageHeader } from '@/components/layout/page-header';
-import { Separator } from '@/components/ui/separator';
 import { Plus, FolderOpen, Computer } from 'lucide-react';
 import { ArrowLeftIcon } from '@/components/ui/arrow-left';
 import { AnimateIcon } from '@/components/ui/animate-icon';
@@ -126,7 +125,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
   return (
     <>
       <PageHeader
-        title="crapdash admin"
+        title="crapdash /admin"
       >
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <ThemeToggle />
@@ -145,25 +144,22 @@ export function AdminClient({ categories: initialCategories, services: initialSe
       </PageHeader>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
+        <div className="space-y-10">
           {/* Categories Section */}
           <section>
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Categories</CardTitle>
-                  {categories.length > 0 && (
-                    <Button onClick={handleAddCategory}>
-                      <Plus className="h-4 w-4" />
-                      Add Category
-                    </Button>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Separator className="mb-4" />
-                {categories.length === 0 ? (
-                  <Empty className="py-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold">Categories</h2>
+              {categories.length > 0 && (
+                <Button onClick={handleAddCategory}>
+                  <Plus className="h-4 w-4" />
+                  Add Category
+                </Button>
+              )}
+            </div>
+            {categories.length === 0 ? (
+              <Card className="shadow-xs">
+                <CardContent className="py-8">
+                  <Empty>
                     <EmptyHeader>
                       <EmptyMedia>
                         <FolderOpen className="size-10 text-primary" />
@@ -176,40 +172,37 @@ export function AdminClient({ categories: initialCategories, services: initialSe
                       Add Category
                     </Button>
                   </Empty>
-                ) : filteredData.categories.length === 0 ? (
-                  <p className="text-center py-8 text-muted-foreground">
-                    No categories found matching your search.
-                  </p>
-                ) : (
-                  <CategoryList
-                    categories={filteredData.categories}
-                    services={services}
-                    onEdit={handleEditCategory}
-                    onDeleted={handleRefresh}
-                  />
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : filteredData.categories.length === 0 ? (
+              <p className="text-center py-8 text-muted-foreground">
+                No categories found matching your search.
+              </p>
+            ) : (
+              <CategoryList
+                categories={filteredData.categories}
+                services={services}
+                onEdit={handleEditCategory}
+                onDeleted={handleRefresh}
+              />
+            )}
           </section>
 
           {/* Services Section */}
           <section>
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Services</CardTitle>
-                  {services.length > 0 && (
-                    <Button onClick={handleAddService}>
-                      <Plus className="h-4 w-4" />
-                      Add Service
-                    </Button>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Separator className="mb-4" />
-                {services.length === 0 ? (
-                  <Empty className="py-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold">Services</h2>
+              {services.length > 0 && (
+                <Button onClick={handleAddService}>
+                  <Plus className="h-4 w-4" />
+                  Add Service
+                </Button>
+              )}
+            </div>
+            {services.length === 0 ? (
+              <Card className="shadow-xs">
+                <CardContent className="py-8">
+                  <Empty>
                     <EmptyHeader>
                       <EmptyMedia>
                         <Computer className="size-10 text-primary" />
@@ -226,20 +219,20 @@ export function AdminClient({ categories: initialCategories, services: initialSe
                       Add Service
                     </Button>
                   </Empty>
-                ) : filteredData.services.length === 0 ? (
-                  <p className="text-center py-8 text-muted-foreground">
-                    No services found matching your search.
-                  </p>
-                ) : (
-                  <ServiceList
-                    services={filteredData.services}
-                    categories={categories}
-                    onEdit={handleEditService}
-                    onDeleted={handleRefresh}
-                  />
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : filteredData.services.length === 0 ? (
+              <p className="text-center py-8 text-muted-foreground">
+                No services found matching your search.
+              </p>
+            ) : (
+              <ServiceList
+                services={filteredData.services}
+                categories={categories}
+                onEdit={handleEditService}
+                onDeleted={handleRefresh}
+              />
+            )}
           </section>
         </div>
 

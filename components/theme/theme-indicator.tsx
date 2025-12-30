@@ -26,7 +26,7 @@ export function ThemeIndicator({
       )}
       {...props}
     >
-      <div className="flex w-48 flex-col items-center gap-4 rounded-lg border bg-popover py-10 shadow-2xl">
+      <div className="flex w-48 flex-col items-center gap-4 rounded-lg border bg-popover/95 py-10 shadow-2xl">
         <Icon size={56} className="text-primary dark:drop-shadow-[0_0_12px_currentColor]" />
         <span className="text-xl font-semibold">{label}</span>
       </div>
