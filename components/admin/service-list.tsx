@@ -18,9 +18,10 @@ interface ServiceListProps {
   categories: Category[];
   onEdit: (service: Service) => void;
   onDeleted: () => void;
+  cacheKey?: number;
 }
 
-export function ServiceList({ services, categories, onEdit, onDeleted }: ServiceListProps) {
+export function ServiceList({ services, categories, onEdit, onDeleted, cacheKey }: ServiceListProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState<Service | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -127,7 +128,7 @@ export function ServiceList({ services, categories, onEdit, onDeleted }: Service
         )}
         <CardHeader className="flex-1">
           <div className={cn('flex items-start gap-3', !service.active && 'opacity-60')}>
-            <ServiceIcon service={service} size="md" className={cn(!service.active && 'grayscale')} />
+            <ServiceIcon service={service} size="md" className={cn(!service.active && 'grayscale')} cacheKey={cacheKey} />
             <div className="flex-1 min-w-0">
               <CardTitle className="text-lg flex items-center gap-2">
                 <span className="truncate">{service.name}</span>

@@ -15,6 +15,7 @@ interface ServiceFormModalProps {
   service?: Service;
   categories: Category[];
   onSuccess: () => void;
+  cacheKey?: number;
 }
 
 export function ServiceFormModal({
@@ -23,6 +24,7 @@ export function ServiceFormModal({
   service,
   categories,
   onSuccess,
+  cacheKey,
 }: ServiceFormModalProps) {
   const handleSuccess = () => {
     onSuccess();
@@ -40,6 +42,7 @@ export function ServiceFormModal({
           categories={categories}
           onSuccess={handleSuccess}
           onCancel={() => onOpenChange(false)}
+          cacheKey={cacheKey}
         />
       </DialogContent>
     </Dialog>

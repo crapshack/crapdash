@@ -25,9 +25,10 @@ interface ServiceFormProps {
   categories: Category[];
   onSuccess?: () => void;
   onCancel?: () => void;
+  cacheKey?: number;
 }
 
-export function ServiceForm({ service, categories, onSuccess, onCancel }: ServiceFormProps) {
+export function ServiceForm({ service, categories, onSuccess, onCancel, cacheKey }: ServiceFormProps) {
   const [name, setName] = useState(service?.name || '');
   const [description, setDescription] = useState(service?.description || '');
   const [url, setUrl] = useState(service?.url || '');
@@ -166,6 +167,7 @@ export function ServiceForm({ service, categories, onSuccess, onCancel }: Servic
             setIcon('');
             setPendingIconFile(null);
           }}
+          cacheKey={cacheKey}
         />
         <FieldDescription>Upload a custom icon for this service</FieldDescription>
       </Field>

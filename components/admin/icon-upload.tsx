@@ -10,11 +10,12 @@ interface IconUploadProps {
   pendingFile?: File | null;
   onFileSelect: (file: File | null) => void;
   onClear: () => void;
+  cacheKey?: number;
 }
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
-export function IconUpload({ value, pendingFile, onFileSelect, onClear }: IconUploadProps) {
+export function IconUpload({ value, pendingFile, onFileSelect, onClear, cacheKey }: IconUploadProps) {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -62,7 +63,7 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear }: IconUp
     }
   };
 
-  const currentIcon = preview || value;
+  const currentIcon = preview || (value && cacheKey ? `${value}?v=${cacheKey}` : value);
 
   return (
     <div className="space-y-3">
@@ -77,6 +78,7 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear }: IconUp
                 width={64}
                 height={64}
                 className="object-cover w-full h-full"
+                unoptimized
               />
             ) : (
               <ImageIcon className="w-6 h-6 text-muted-foreground" />

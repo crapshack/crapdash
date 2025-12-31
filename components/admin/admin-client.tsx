@@ -34,6 +34,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
   const [editingCategory, setEditingCategory] = useState<Category | undefined>();
   const [editingService, setEditingService] = useState<Service | undefined>();
   const [searchQuery, setSearchQuery] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -89,6 +90,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
 
   const handleRefresh = () => {
     fetchData();
+    setRefreshKey(k => k + 1);
   };
 
   const handleAddCategory = () => {
@@ -234,6 +236,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
                 categories={categories}
                 onEdit={handleEditService}
                 onDeleted={handleRefresh}
+                cacheKey={refreshKey}
               />
             )}
           </section>
@@ -253,6 +256,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
           service={editingService}
           categories={categories}
           onSuccess={handleRefresh}
+          cacheKey={refreshKey}
         />
       </main>
     </>

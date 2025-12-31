@@ -6,6 +6,7 @@ interface ServiceIconProps {
   service: Service;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  cacheKey?: number;
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -21,18 +22,20 @@ const SIZE_CLASSES = {
   lg: 'w-16 h-16 text-xl',
 };
 
-export function ServiceIcon({ service, size = 'md', className }: ServiceIconProps) {
+export function ServiceIcon({ service, size = 'md', className, cacheKey }: ServiceIconProps) {
   const sizeClass = SIZE_CLASSES[size];
 
   // If service has an icon, display it
   if (service.icon) {
+    const iconSrc = cacheKey ? `${service.icon}?v=${cacheKey}` : service.icon;
     return (
       <div className={cn('relative flex-shrink-0 rounded-lg overflow-hidden', sizeClass, className)}>
         <Image
-          src={service.icon}
+          src={iconSrc}
           alt={`${service.name} icon`}
           fill
           className="object-cover"
+          unoptimized
         />
       </div>
     );
