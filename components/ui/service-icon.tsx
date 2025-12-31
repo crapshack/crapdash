@@ -27,7 +27,8 @@ export function ServiceIcon({ service, size = 'md', className, cacheKey }: Servi
 
   // If service has an icon, display it
   if (service.icon) {
-    const iconSrc = cacheKey ? `${service.icon}?v=${cacheKey}` : service.icon;
+    const iconUrl = `/api/${service.icon}`;
+    const iconSrc = cacheKey ? `${iconUrl}?v=${cacheKey}` : iconUrl;
     return (
       <div className={cn('relative flex-shrink-0 rounded-lg overflow-hidden', sizeClass, className)}>
         <Image

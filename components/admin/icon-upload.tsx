@@ -63,7 +63,8 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear, cacheKey
     }
   };
 
-  const currentIcon = preview || (value && cacheKey ? `${value}?v=${cacheKey}` : value);
+  const iconUrl = value ? `/api/${value}` : null;
+  const currentIcon = preview || (iconUrl && cacheKey ? `${iconUrl}?v=${cacheKey}` : iconUrl);
 
   return (
     <div className="space-y-3">
