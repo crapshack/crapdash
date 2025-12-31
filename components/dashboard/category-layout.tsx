@@ -51,4 +51,3 @@ export function CategoryLayout({ category, services, layout, onEditService, onDe
     </section>
   );
 }
-

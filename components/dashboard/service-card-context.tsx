@@ -61,4 +61,3 @@ export function ServiceCardContext({ service, onEdit, onDelete, cacheKey, index 
     </ContextMenu>
   );
 }
-
