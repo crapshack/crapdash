@@ -10,7 +10,7 @@ interface PageHeaderProps {
 export function PageHeader({ title, description, children }: PageHeaderProps) {
   return (
     <div className="w-full bg-muted border-b border-border">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4 shrink-0">
             <Link href="/">
