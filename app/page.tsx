@@ -4,7 +4,6 @@ import { DashboardClient } from '@/components/dashboard/dashboard-client';
 import {
   LAYOUTS,
   SETTINGS_COOKIE_NAME,
-  DEFAULT_SETTINGS,
   type DashboardSettings,
 } from '@/lib/types';
 

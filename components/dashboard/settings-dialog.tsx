@@ -77,13 +77,7 @@ export function SettingsDialog({ settings, onSettingChange, open, onOpenChange }
 
           {/* Theme Setting */}
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <Label className="text-muted-foreground">Theme</Label>
-              <div className="flex items-center gap-1">
-                <Kbd>{modifierKey}</Kbd>
-                <Kbd>J</Kbd>
-              </div>
-            </div>
+            <Label className="text-muted-foreground">Theme</Label>
             <div className="grid grid-cols-3 gap-2">
               {THEMES.map((t) => {
                 const { icon, label } = THEME_META[t];
@@ -116,6 +110,18 @@ export function SettingsDialog({ settings, onSettingChange, open, onOpenChange }
               onCheckedChange={(checked) => onSettingChange('expandOnHover', checked)}
             />
           </div>
+
+          <Separator />
+
+          {/* Keyboard Shortcuts */}
+          <div className="flex flex-col gap-2">
+            <Label className="text-muted-foreground">Keyboard shortcuts</Label>
+            <div className="rounded-lg border p-3 flex flex-col gap-2">
+              <ShortcutRow keys={[modifierKey, '.']} description="Toggle settings" />
+              <ShortcutRow keys={[modifierKey, 'J']} description="Cycle theme" />
+              <ShortcutRow keys={[modifierKey, 'K']} description="Focus search" />
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
@@ -145,5 +151,23 @@ function OptionButton({ icon: Icon, label, selected, onSelect }: OptionButtonPro
       <Icon size={20} />
       <span className="text-xs font-medium">{label}</span>
     </button>
+  );
+}
+
+interface ShortcutRowProps {
+  keys: string[];
+  description: string;
+}
+
+function ShortcutRow({ keys, description }: ShortcutRowProps) {
+  return (
+    <div className="flex items-center justify-between text-xs">
+      <span className="text-muted-foreground">{description}</span>
+      <div className="flex items-center gap-0.5">
+        {keys.map((key, i) => (
+          <Kbd key={i}>{key}</Kbd>
+        ))}
+      </div>
+    </div>
   );
 }
