@@ -1,7 +1,6 @@
 'use client';
-
-import { Rows3, Columns3 } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { LayoutPreviewOption } from './layout-preview-option';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -59,17 +58,17 @@ export function SettingsDialog({ settings, onSettingChange, open, onOpenChange, 
           <div className="flex flex-col gap-2">
             <Label className="text-muted-foreground">Layout</Label>
             <div className="grid grid-cols-2 gap-2">
-              <OptionButton
-                icon={Rows3}
+              <LayoutPreviewOption
                 label="Rows"
                 selected={settings.layout === LAYOUTS.ROWS}
                 onSelect={() => onSettingChange('layout', LAYOUTS.ROWS)}
+                variant={LAYOUTS.ROWS}
               />
-              <OptionButton
-                icon={Columns3}
+              <LayoutPreviewOption
                 label="Columns"
                 selected={settings.layout === LAYOUTS.COLUMNS}
                 onSelect={() => onSettingChange('layout', LAYOUTS.COLUMNS)}
+                variant={LAYOUTS.COLUMNS}
               />
             </div>
           </div>
