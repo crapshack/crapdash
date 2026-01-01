@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -50,6 +51,7 @@ export function CategoryList({ categories, services, onEdit, onDeleted }: Catego
     const result = await deleteCategory(categoryToDelete.id);
 
     if (result.success) {
+      toast.success('Category deleted');
       setDeleteDialogOpen(false);
       setCategoryToDelete(null);
       onDeleted();
@@ -72,7 +74,7 @@ export function CategoryList({ categories, services, onEdit, onDeleted }: Catego
       if (!result.success) {
         // Revert on error
         setLocalCategories(categories);
-        console.error('Failed to reorder categories:', result.errors);
+        toast.error('Failed to save category order');
       } else {
         onDeleted(); // Refresh data
       }

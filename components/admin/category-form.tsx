@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -41,6 +42,7 @@ export function CategoryForm({ category, onSuccess, onCancel }: CategoryFormProp
       : await createCategory(data);
 
     if (result.success) {
+      toast.success(category ? 'Category updated' : 'Category created');
       setName('');
       setIcon('');
       onSuccess?.();

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -77,6 +78,7 @@ export function ServiceForm({ service, categories, onSuccess, onCancel, cacheKey
       : await createService({ id: serviceId, ...formData });
 
     if (result.success) {
+      toast.success(service ? 'Service updated' : 'Service created');
       setName('');
       setDescription('');
       setUrl('');

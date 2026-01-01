@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition, useMemo } from 'react';
+import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CornerRibbon } from '@/components/ui/corner-ribbon';
@@ -65,6 +66,7 @@ export function ServiceList({ services, categories, onEdit, onDeleted, cacheKey 
     const result = await deleteService(serviceToDelete.id);
 
     if (result.success) {
+      toast.success('Service deleted');
       setDeleteDialogOpen(false);
       setServiceToDelete(null);
       onDeleted();
@@ -108,7 +110,7 @@ export function ServiceList({ services, categories, onEdit, onDeleted, cacheKey 
       if (!result.success) {
         // Revert on error
         setLocalServices(services);
-        console.error('Failed to reorder services:', result.errors);
+        toast.error('Failed to save service order');
       } else {
         onDeleted(); // Refresh data
       }

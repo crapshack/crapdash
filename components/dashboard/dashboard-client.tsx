@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Computer } from 'lucide-react';
@@ -87,6 +88,7 @@ export function DashboardClient({ categories, services, initialLayout }: Dashboa
   }, []);
 
   const handleEditSuccess = useCallback(() => {
+    toast.success('Service updated');
     setEditModalOpen(false);
     setEditingService(null);
     setCacheKey((k) => k + 1);
@@ -108,6 +110,7 @@ export function DashboardClient({ categories, services, initialLayout }: Dashboa
     const result = await deleteService(deletingService.id);
 
     if (result.success) {
+      toast.success('Service deleted');
       setDeleteDialogOpen(false);
       setDeletingService(null);
       router.refresh();
