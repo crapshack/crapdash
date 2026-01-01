@@ -4,6 +4,7 @@ import { useState, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Upload, X, ImageIcon } from 'lucide-react';
 import Image from 'next/image';
+import { IMAGE_ACCEPT, IMAGE_TYPE_ERROR, IMAGE_TYPE_LABEL, isAllowedImageMime } from '@/lib/image-constants';
 
 interface IconUploadProps {
   value?: string;
@@ -40,9 +41,8 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear, cacheKey
     }
 
     // Validate file type
-    const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp', 'image/gif'];
-    if (!validTypes.includes(file.type)) {
-      setError('Invalid file type. Only PNG, JPG, SVG, WebP, and GIF are allowed.');
+    if (!isAllowedImageMime(file.type)) {
+      setError(IMAGE_TYPE_ERROR);
       return;
     }
 
@@ -114,7 +114,7 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear, cacheKey
           </div>
 
           <p className="text-xs text-muted-foreground">
-            PNG, JPG, SVG, WebP, or GIF (max 2MB)
+            {IMAGE_TYPE_LABEL} (max 2MB)
           </p>
         </div>
       </div>
@@ -130,7 +130,7 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear, cacheKey
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp,image/gif"
+        accept={IMAGE_ACCEPT}
         onChange={handleFileSelect}
         className="hidden"
       />

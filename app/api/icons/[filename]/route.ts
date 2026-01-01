@@ -1,18 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
-import path from 'path';
 import { getIconFilePath, isValidImageExtension } from '@/lib/file-utils';
+import { getImageContentType } from '@/lib/image-constants';
 
 export const runtime = 'nodejs';
-
-const CONTENT_TYPES: Record<string, string> = {
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.svg': 'image/svg+xml',
-  '.webp': 'image/webp',
-  '.gif': 'image/gif',
-};
 
 export async function GET(
   request: NextRequest,
@@ -55,8 +46,7 @@ export async function GET(
     const fileBuffer = await fs.readFile(filePath);
 
     // Get content type
-    const ext = path.extname(filename).toLowerCase();
-    const contentType = CONTENT_TYPES[ext] || 'application/octet-stream';
+    const contentType = getImageContentType(filename) || 'application/octet-stream';
 
     // Return file with cache validation headers
     return new NextResponse(fileBuffer, {

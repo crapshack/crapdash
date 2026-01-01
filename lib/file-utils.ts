@@ -1,8 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import { isAllowedImageExtension } from './image-constants';
 
 const ICONS_DIR = path.join(process.cwd(), 'data', 'icons');
-const ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.svg', '.webp', '.gif'];
 
 /**
  * Deletes all icon files for a given service ID
@@ -53,8 +53,7 @@ export async function getServiceIconPath(serviceId: string): Promise<string | nu
  * Validates file extension
  */
 export function isValidImageExtension(filename: string): boolean {
-  const ext = path.extname(filename).toLowerCase();
-  return ALLOWED_EXTENSIONS.includes(ext);
+  return isAllowedImageExtension(filename);
 }
 
 /**

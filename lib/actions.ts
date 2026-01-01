@@ -7,17 +7,10 @@ import { ZodError } from 'zod';
 import { readConfig, writeConfig } from './db';
 import { categorySchema, serviceSchema } from './validations';
 import { deleteServiceIcon, isValidImageExtension, getIconFilePath } from './file-utils';
+import { IMAGE_TYPE_ERROR, isAllowedImageMime } from './image-constants';
 import type { Category, Service, ActionResult, CategoryFormData, ServiceFormData, ServiceCreateData } from './types';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
-const ALLOWED_TYPES = [
-  'image/png',
-  'image/jpeg',
-  'image/jpg',
-  'image/svg+xml',
-  'image/webp',
-  'image/gif',
-];
 
 export async function uploadServiceIcon(formData: FormData): Promise<ActionResult<string>> {
   try {
@@ -32,8 +25,8 @@ export async function uploadServiceIcon(formData: FormData): Promise<ActionResul
       return { success: false, errors: [{ field: 'icon', message: 'No service ID provided' }] };
     }
 
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      return { success: false, errors: [{ field: 'icon', message: 'Invalid file type. Only PNG, JPG, SVG, WebP, and GIF are allowed.' }] };
+    if (!isAllowedImageMime(file.type)) {
+      return { success: false, errors: [{ field: 'icon', message: IMAGE_TYPE_ERROR }] };
     }
 
     if (file.size > MAX_FILE_SIZE) {
