@@ -1,6 +1,7 @@
 'use client';
 
 import { Copy, ExternalLink, Pencil, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -24,8 +25,29 @@ export function ServiceCardContext({ service, onEdit, onDelete, cacheKey, index 
     window.open(service.url, '_blank', 'noopener,noreferrer');
   };
 
+  /**
+   * Copy URL to clipboard using deprecated execCommand.
+   * The modern Clipboard API (navigator.clipboard) only works over HTTPS,
+   * but this app may be served over HTTP. execCommand works everywhere.
+   */
   const handleCopyUrl = () => {
-    navigator.clipboard.writeText(service.url);
+    setTimeout(() => {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = service.url;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        toast.success('URL copied to clipboard');
+      } catch {
+        toast.error('Failed to copy URL to clipboard');
+      }
+    }, 0);
   };
 
   return (

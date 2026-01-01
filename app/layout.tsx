@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeShortcut } from "@/components/theme/theme-shortcut";
+import { Toaster } from "sonner";
 import { PageFooter } from "@/components/layout/page-footer";
 import "./globals.css";
 
@@ -36,6 +37,7 @@ export default function RootLayout({
           <ThemeShortcut />
           {children}
           <PageFooter />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
