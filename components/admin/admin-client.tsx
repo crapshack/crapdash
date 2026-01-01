@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PageHeader } from '@/components/layout/page-header';
-import { Plus, FolderOpen, Computer, Download } from 'lucide-react';
+import { Plus, FolderOpen, Computer } from 'lucide-react';
 import { ArrowLeftIcon } from '@/components/ui/arrow-left';
 import { AnimateIcon } from '@/components/ui/animate-icon';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -15,6 +15,7 @@ import { SearchBar } from '@/components/dashboard/search-bar';
 import { CategoryFormModal } from '@/components/admin/category-form-modal';
 import { ServiceFormModal } from '@/components/admin/service-form-modal';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import { DownloadIcon } from '@/components/ui/download';
 import type { Category, Service } from '@/lib/types';
 
 // Dynamic imports to avoid SSR for drag-and-drop components
@@ -135,10 +136,10 @@ export function AdminClient({ categories: initialCategories, services: initialSe
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <Tooltip>
           <TooltipTrigger>
-            <AnimateIcon animateOnHover asChild>
+            <AnimateIcon animateOnHover>
               <Button variant="outline" size="icon-lg" asChild>
                 <a href="/api/config/export" download>
-                  <Download className="h-4 w-4" />
+                  <DownloadIcon size={18} />
                 </a>
               </Button>
             </AnimateIcon>
