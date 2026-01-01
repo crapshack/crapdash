@@ -35,13 +35,13 @@ docker run -d \
 ```yaml
 services:
   crapdash:
-    image: ghcr.io/crapdash/crapdash:latest
+    image: ghcr.io/crapshack/crapdash:latest
     container_name: crapdash
     restart: unless-stopped
     ports:
       - "2727:2727"
     volumes:
-      - ./data:/app/data
+      - ./crapdash:/app/data
 ```
 
 Open [localhost:2727](http://localhost:2727).
