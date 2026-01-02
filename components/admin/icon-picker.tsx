@@ -67,6 +67,8 @@ export function IconPicker({
     }
 
     onFileSelect(file);
+    // Signal that we're using an image type icon (actual path will be set after upload)
+    onValueChange({ type: ICON_TYPES.IMAGE, value: '' });
 
     // Reset file input
     if (fileInputRef.current) {
