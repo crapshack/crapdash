@@ -135,24 +135,24 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="outline" size="icon-lg" onClick={() => setSettingsOpen(true)}>
-              <AnimateIcon animateOnHover>
+            <AnimateIcon animateOnHover>
+              <Button variant="outline" size="icon-lg" onClick={() => setSettingsOpen(true)}>
                 <SlidersHorizontalIcon size={18} />
-              </AnimateIcon>
-            </Button>
+              </Button>
+            </AnimateIcon>
           </TooltipTrigger>
           <TooltipContent side="bottom">Preferences</TooltipContent>
         </Tooltip>
         <SettingsDialog settings={settings} onSettingChange={updateSetting} open={settingsOpen} onOpenChange={setSettingsOpen} />
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="outline" size="icon-lg" asChild>
-              <Link href="/admin">
-                <AnimateIcon animateOnHover>
+            <AnimateIcon animateOnHover>
+              <Button variant="outline" size="icon-lg" asChild>
+                <Link href="/admin">
                   <SettingsIcon size={18} />
-                </AnimateIcon>
-              </Link>
-            </Button>
+                </Link>
+              </Button>
+            </AnimateIcon>
           </TooltipTrigger>
           <TooltipContent side="bottom">Admin</TooltipContent>
         </Tooltip>
