@@ -9,6 +9,7 @@ import { PageHeader } from '@/components/layout/page-header';
 import { Plus, FolderOpen, Computer } from 'lucide-react';
 import { ArrowLeftIcon } from '@/components/ui/arrow-left';
 import { AnimateIcon } from '@/components/ui/animate-icon';
+import { SlidersHorizontalIcon } from '@/components/ui/sliders-horizontal';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { SettingsDialog } from '@/components/dashboard/settings-dialog';
 import { useSettings } from '@/hooks/use-settings';
@@ -141,6 +142,16 @@ export function AdminClient({ categories: initialCategories, services: initialSe
             </AnimateIcon>
           </TooltipTrigger>
           <TooltipContent side="bottom">Export config</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="icon-lg" onClick={() => setSettingsOpen(true)}>
+              <AnimateIcon animateOnHover>
+                <SlidersHorizontalIcon size={18} />
+              </AnimateIcon>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Preferences</TooltipContent>
         </Tooltip>
         <SettingsDialog settings={settings} onSettingChange={updateSetting} open={settingsOpen} onOpenChange={setSettingsOpen} />
         <Tooltip>

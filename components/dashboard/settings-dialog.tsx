@@ -1,7 +1,6 @@
 'use client';
 import { useTheme } from 'next-themes';
 import { LayoutPreviewOption } from './layout-preview-option';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
@@ -12,10 +11,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { AnimateIcon } from '@/components/ui/animate-icon';
-import { SlidersHorizontalIcon } from '@/components/ui/sliders-horizontal';
 import { THEMES, THEME_META } from '@/components/theme/theme-config';
 import { Kbd, ModKbd } from '@/components/ui/kbd';
 import { LAYOUTS, type DashboardSettings } from '@/lib/types';
@@ -35,16 +31,9 @@ export function SettingsDialog({ settings, onSettingChange, open, onOpenChange }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <AnimateIcon asChild animateOnHover>
-        <DialogTrigger asChild>
-          <Button variant="outline" size="icon-lg">
-            <SlidersHorizontalIcon size={18} />
-          </Button>
-        </DialogTrigger>
-      </AnimateIcon>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Settings</DialogTitle>
+          <DialogTitle>Preferences</DialogTitle>
           <DialogDescription>
             Customize your dashboard experience
           </DialogDescription>

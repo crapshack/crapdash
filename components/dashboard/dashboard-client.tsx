@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Computer } from 'lucide-react';
 import { SettingsIcon } from '@/components/ui/settings';
+import { SlidersHorizontalIcon } from '@/components/ui/sliders-horizontal';
 import { AnimateIcon } from '@/components/ui/animate-icon';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/layout/page-header';
@@ -15,6 +16,7 @@ import { SettingsDialog } from './settings-dialog';
 import { useSettings } from '@/hooks/use-settings';
 import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ServiceFormModal } from '@/components/admin/service-form-modal';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { deleteService } from '@/lib/actions';
@@ -131,14 +133,29 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
     <>
       <PageHeader title="crapdash">
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="icon-lg" onClick={() => setSettingsOpen(true)}>
+              <AnimateIcon animateOnHover>
+                <SlidersHorizontalIcon size={18} />
+              </AnimateIcon>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Preferences</TooltipContent>
+        </Tooltip>
         <SettingsDialog settings={settings} onSettingChange={updateSetting} open={settingsOpen} onOpenChange={setSettingsOpen} />
-        <AnimateIcon animateOnHover asChild>
-          <Button variant="outline" size="icon-lg" asChild>
-            <Link href="/admin">
-              <SettingsIcon size={18} />
-            </Link>
-          </Button>
-        </AnimateIcon>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="icon-lg" asChild>
+              <Link href="/admin">
+                <AnimateIcon animateOnHover>
+                  <SettingsIcon size={18} />
+                </AnimateIcon>
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Admin</TooltipContent>
+        </Tooltip>
       </PageHeader>
 
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
