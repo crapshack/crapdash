@@ -45,7 +45,17 @@ export function AdminClient({ categories: initialCategories, services: initialSe
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   useKeyboardShortcuts([
-    { key: 'k', mod: true, handler: () => searchInputRef.current?.focus() },
+    {
+      key: 'k',
+      mod: true,
+      handler: () => {
+        if (document.activeElement === searchInputRef.current) {
+          searchInputRef.current?.blur();
+        } else {
+          searchInputRef.current?.focus();
+        }
+      },
+    },
     { key: '.', mod: true, handler: () => setSettingsOpen((o) => !o) },
   ]);
 

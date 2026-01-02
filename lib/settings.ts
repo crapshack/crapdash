@@ -7,9 +7,8 @@ import { LAYOUTS, type DashboardSettings } from '@/lib/types';
 export function parseSettings(cookieValue: string | undefined): Partial<DashboardSettings> {
   if (!cookieValue) return {};
 
-  const decoded = decodeURIComponent(cookieValue);
-
   try {
+    const decoded = decodeURIComponent(cookieValue);
     const parsed = JSON.parse(decoded);
     const settings: Partial<DashboardSettings> = {};
 
