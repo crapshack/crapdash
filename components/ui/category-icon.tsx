@@ -23,6 +23,20 @@ for (const key of Object.keys(LucideIcons)) {
   }
 }
 
+// Get unique icon names (exclude duplicates like HeartIcon, LucideHeart)
+// Only keep the base PascalCase names (e.g., "Heart" not "HeartIcon" or "LucideHeart")
+const uniqueIconNames: string[] = Object.keys(LucideIcons)
+  .filter(key => 
+    !NON_ICONS.has(key) && 
+    !key.endsWith('Icon') && 
+    !key.startsWith('Lucide')
+  )
+  .sort((a, b) => a.localeCompare(b));
+
+export function getIconNames(): string[] {
+  return uniqueIconNames;
+}
+
 export function resolveIconName(name: string): string | null {
   if (!name) return null;
   return iconLookup[name.toLowerCase()] ?? null;

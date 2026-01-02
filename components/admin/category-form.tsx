@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Field, FieldLabel, FieldError } from '@/components/ui/field';
-import { LucideIconInput, resolveIconName } from './lucide-icon-input';
+import { LucideIconPicker, resolveIconName } from './lucide-icon-picker';
 import { createCategory, updateCategory } from '@/lib/actions';
 import type { Category } from '@/lib/types';
 
@@ -74,7 +74,7 @@ export function CategoryForm({ category, onSuccess, onCancel }: CategoryFormProp
 
       <Field data-invalid={!!errors.icon}>
         <FieldLabel>Icon</FieldLabel>
-        <LucideIconInput
+        <LucideIconPicker
           value={icon}
           onChange={setIcon}
           disabled={isSubmitting}
