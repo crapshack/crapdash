@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import type { CSSProperties } from 'react';
 import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { DeleteConfirmDialog } from './delete-confirm-dialog';
 import { deleteCategory, reorderCategories } from '@/lib/actions';
 import type { Category, Service } from '@/lib/types';
+import { CategoryCardContext } from './category-card-context';
 
 interface CategoryListProps {
   categories: Category[];
@@ -147,9 +149,16 @@ export function CategoryList({ categories, services, onEdit, onDeleted }: Catego
               key={category.id} 
               id={category.id}
               className="animate-card-in"
-              style={{ '--index': index } as React.CSSProperties}
+              style={{ '--index': index } as CSSProperties}
             >
-              {renderCategoryCard(category)}
+              <CategoryCardContext
+                category={category}
+                onEdit={onEdit}
+                onDelete={handleDeleteClick}
+                index={index}
+              >
+                {renderCategoryCard(category)}
+              </CategoryCardContext>
             </SortableItem>
           ))}
         </div>

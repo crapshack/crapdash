@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Copy, ExternalLink, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -9,19 +10,27 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
-import { ServiceCard } from './service-card';
 import type { Service } from '@/lib/types';
 
 interface ServiceCardContextProps {
   service: Service;
-  expandOnHover: boolean;
+  children: React.ReactNode;
   onEdit: (service: Service) => void;
   onDelete: (service: Service) => void;
-  cacheKey?: number;
-  index?: number;
+  index: number;
 }
 
-export function ServiceCardContext({ service, expandOnHover, onEdit, onDelete, cacheKey, index = 0 }: ServiceCardContextProps) {
+/**
+ * Shared context menu wrapper for service cards.
+ * Consumers supply their own card content via `children`.
+ */
+export function ServiceCardContext({
+  service,
+  children,
+  onEdit,
+  onDelete,
+  index,
+}: ServiceCardContextProps) {
   const handleOpenInNewTab = () => {
     window.open(service.url, '_blank', 'noopener,noreferrer');
   };
@@ -54,11 +63,11 @@ export function ServiceCardContext({ service, expandOnHover, onEdit, onDelete, c
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
-        <div 
-          className="group/context animate-card-in"
+        <div
+          className="group/context animate-card-in h-full"
           style={{ '--index': index } as React.CSSProperties}
         >
-          <ServiceCard service={service} expandOnHover={expandOnHover} cacheKey={cacheKey} />
+          {children}
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent className="w-48">

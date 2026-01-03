@@ -130,7 +130,7 @@ export function SortableItem({ id, children, className, style: styleProp }: Sort
       ref={setNodeRef}
       style={style}
       className={cn(
-        'relative cursor-grab active:cursor-grabbing',
+        'relative cursor-grab active:cursor-grabbing rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-shadow',
         isDragging && 'z-50 opacity-50',
         className
       )}

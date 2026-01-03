@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition, useMemo } from 'react';
+import type { CSSProperties } from 'react';
 import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,7 @@ import { DeleteConfirmDialog } from './delete-confirm-dialog';
 import { deleteService, reorderServices } from '@/lib/actions';
 import type { Category, Service } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { ServiceCardContext } from '@/components/shared/service-card-context';
 
 interface ServiceListProps {
   services: Service[];
@@ -211,9 +213,16 @@ export function ServiceList({ services, categories, onEdit, onDeleted, cacheKey 
                       key={service.id} 
                       id={service.id} 
                       className="h-full animate-card-in"
-                      style={{ '--index': index } as React.CSSProperties}
+                      style={{ '--index': index } as CSSProperties}
                     >
-                      {renderServiceCard(service)}
+                      <ServiceCardContext
+                        service={service}
+                        onEdit={onEdit}
+                        onDelete={handleDeleteClick}
+                        index={index}
+                      >
+                        {renderServiceCard(service)}
+                      </ServiceCardContext>
                     </SortableItem>
                   ))}
                 </div>

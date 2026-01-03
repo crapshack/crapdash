@@ -1,4 +1,5 @@
-import { ServiceCardContext } from './service-card-context';
+import { ServiceCardContext } from '@/components/shared/service-card-context';
+import { ServiceCard } from './service-card';
 import { CategoryIcon } from '@/components/ui/category-icon';
 import { cn } from '@/lib/utils';
 import { LAYOUTS, type Category, type Service, type DashboardLayout } from '@/lib/types';
@@ -42,12 +43,16 @@ export function CategoryLayout({ category, services, layout, expandOnHover, onEd
           <ServiceCardContext
             key={service.id}
             service={service}
-            expandOnHover={expandOnHover}
             onEdit={onEditService}
             onDelete={onDeleteService}
-            cacheKey={cacheKey}
             index={index}
-          />
+          >
+            <ServiceCard
+              service={service}
+              expandOnHover={expandOnHover}
+              cacheKey={cacheKey}
+            />
+          </ServiceCardContext>
         ))}
       </div>
     </section>
