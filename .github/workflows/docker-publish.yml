@@ -5,6 +5,7 @@ on:
     branches: [main]
     tags: ["v*"]
     paths-ignore:
+      - "docs/**"
       - "**/*.md"
       - ".github/workflows/**"
   workflow_dispatch:

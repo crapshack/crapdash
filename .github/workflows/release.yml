@@ -32,20 +32,18 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Prune to production deps
-        run: pnpm prune --prod
+      - name: Prepare release bundle
+        run: |
+          rm -rf release
+          mkdir -p release/public
+          cp -r .next/standalone .next/static release/
+          cp .next/required-server-files.json release/
+          cp public/compy.png public/github-mark.svg release/public/
 
       - name: Create artifact zip
         run: |
-          # Package only the standalone output
-          zip -r "crapdash-${{ github.ref_name }}.zip" \
-            .next/standalone \
-            .next/static \
-            .next/required-server-files.json \
-            public \
-            package.json \
-            pnpm-lock.yaml \
-            next.config.ts
+          cd release
+          zip -r "../crapdash-${{ github.ref_name }}.zip" .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
