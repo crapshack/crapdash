@@ -2,6 +2,7 @@
   "name": "crapdash",
   "version": "0.0.6",
   "private": true,
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev": "next dev -p 2727",
     "build": "next build",
