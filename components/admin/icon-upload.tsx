@@ -34,7 +34,7 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear, cacheKey
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      setError('File too large. Maximum size is 2MB.');
+      setError(`File too large. Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`);
       return;
     }
 

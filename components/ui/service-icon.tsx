@@ -43,13 +43,19 @@ const EMOJI_SIZE_CLASSES = {
 };
 
 export function ServiceIcon({ service, size = 'md', className, emojiClassName, cacheKey }: ServiceIconProps) {
-  const [loadFailed, setLoadFailed] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [failedKey, setFailedKey] = useState<string | null>(null);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
   const sizeClass = SIZE_CLASSES[size];
   const lucideSize = LUCIDE_ICON_SIZE_CLASSES[size];
   const emojiSize = EMOJI_SIZE_CLASSES[size];
   const isInvalidLucide =
     service.icon?.type === ICON_TYPES.ICON && !resolveIconName(service.icon.value);
+  const imageKey =
+    service.icon?.type === ICON_TYPES.IMAGE
+      ? `${service.icon.value ?? ''}:${cacheKey ?? ''}`
+      : null;
+  const loadFailed = imageKey !== null && failedKey === imageKey;
+  const isLoaded = imageKey !== null && loadedKey === imageKey;
 
   // If service has an icon, display it based on type
   if (service.icon) {
@@ -83,8 +89,8 @@ export function ServiceIcon({ service, size = 'md', className, emojiClassName, c
             fill
             className={cn('object-cover transition-opacity', !isLoaded && 'opacity-0')}
             unoptimized
-            onError={() => setLoadFailed(true)}
-            onLoadingComplete={() => setIsLoaded(true)}
+            onError={() => imageKey !== null && setFailedKey(imageKey)}
+            onLoadingComplete={() => imageKey !== null && setLoadedKey(imageKey)}
           />
         </div>
       );
