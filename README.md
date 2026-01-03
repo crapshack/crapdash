@@ -1,10 +1,15 @@
+<!-- LOGO -->
+<h1 align="center">
+  <img src="./public/compy.png" alt="crapdash logo" width="128">
+  <br>crapdash
+</h1>
 <p align="center">
-  <img src="./public/compy.png" alt="crapdash logo" width="120" />
+  Low-frills, customizable homepage to organize your links and services.
 </p>
 
-# crapdash
+## About
 
-A low-frills, customizable homepage to organize your links and services. Group them into categories and access everything from one place.
+Crapdash is a low-frills homepage to manage your links and services. Add names, descriptions, and icons, and organize everything into categories using the built-in admin panel.
 
 <p align="center">
   <img src="./public/screenshots/screen-grab-light.png" alt="Light mode" width="49%" />
@@ -14,8 +19,9 @@ A low-frills, customizable homepage to organize your links and services. Group t
 ## Features
 
 - **Services**: Save links with names, descriptions, and custom icons
-- **Categories**: Group services by project, team, or whatever makes sense
+- **Categories**: Group services into categories with drag-and-drop organization
 - **Admin panel**: Manage services and categories through a simple UI
+- **Search**: Filter services quickly
 
 ## Installation
 
@@ -43,6 +49,21 @@ services:
     volumes:
       - ./crapdash:/app/data
 ```
+
+### Prebuilt Bundle
+
+Download and run the latest prebuilt bundle if you want a quick Node deploy without Docker.
+
+1) Download the latest release from the [Releases](https://github.com/crapshack/crapdash/releases) page and extract it where you want to run it.
+2) Make sure the extracted `data/` directory is writable (config and uploads live there).
+3) Start the server:
+
+```bash
+cd /path/to/crapdash
+PORT=2727 node node_modules/next/dist/bin/next start
+```
+
+Consider using a process manager (e.g., pm2, systemd, launchd, NSSM) and a reverse proxy (nginx, Caddy, etc.).
 
 ## Stack
 
