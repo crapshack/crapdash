@@ -44,12 +44,14 @@ export function IconUpload({ value, pendingFile, onFileSelect, onClear, cacheKey
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       setError(`File too large. Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
     // Validate file type
     if (!isAllowedImageMime(file.type)) {
       setError(IMAGE_TYPE_ERROR);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
