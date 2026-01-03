@@ -6,7 +6,10 @@ const baseIconValue = z.string().trim().min(1, 'Icon value is required');
 
 const imageIconSchema = z.object({
   type: z.literal(ICON_TYPES.IMAGE),
-  value: baseIconValue,
+  value: baseIconValue.regex(
+    /^icons\/[A-Za-z0-9._-]+$/,
+    'Image icon path must be within the icons directory'
+  ),
 });
 
 const lucideIconSchema = z.object({

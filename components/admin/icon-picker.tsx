@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ImageIcon, Shapes, Smile } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { IconUpload } from './icon-upload';
@@ -22,7 +22,18 @@ interface IconPickerProps {
   disabled?: boolean;
 }
 
-export function IconPicker({
+export function IconPicker(props: IconPickerProps) {
+  // Remount the inner picker whenever the external icon type or allowImage toggle changes.
+  // This resets local tab state without relying on effects.
+  const { value, allowImage = true } = props;
+  const key = useMemo(
+    () => `${allowImage ? 'img' : 'noimg'}:${value?.type ?? 'none'}`,
+    [allowImage, value?.type]
+  );
+  return <IconPickerInner key={key} {...props} allowImage={allowImage} />;
+}
+
+function IconPickerInner({
   value,
   pendingFile,
   onValueChange,
@@ -32,11 +43,13 @@ export function IconPicker({
   cacheKey,
   disabled,
 }: IconPickerProps) {
-  // Default tab when no value is set
-  const defaultTab = allowImage ? ICON_TYPES.IMAGE : ICON_TYPES.ICON;
+  const resolveDefaultTab = (): IconType =>
+    !allowImage && value?.type === ICON_TYPES.IMAGE
+      ? ICON_TYPES.ICON
+      : value?.type ?? (allowImage ? ICON_TYPES.IMAGE : ICON_TYPES.ICON);
 
   // Track the active tab independently so switching tabs doesn't clear the current value
-  const [selectedTab, setSelectedTab] = useState<IconType>(value?.type ?? defaultTab);
+  const [selectedTab, setSelectedTab] = useState<IconType>(resolveDefaultTab());
 
   const iconType = selectedTab;
 

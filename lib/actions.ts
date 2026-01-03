@@ -10,6 +10,9 @@ import { deleteServiceIcon, isValidImageExtension, getIconFilePath } from './fil
 import { IMAGE_TYPE_ERROR, MAX_FILE_SIZE, isAllowedImageMime } from './image-constants';
 import { ICON_TYPES, type Category, type Service, type ActionResult, type CategoryFormData, type ServiceFormData, type ServiceCreateData } from './types';
 
+// Restrict service IDs to slug-safe characters to prevent path traversal when writing files
+const SERVICE_ID_PATTERN = /^[a-z0-9-]+$/i;
+
 export async function uploadServiceIcon(formData: FormData): Promise<ActionResult<string>> {
   try {
     const file = formData.get('file') as File;
@@ -21,6 +24,14 @@ export async function uploadServiceIcon(formData: FormData): Promise<ActionResul
 
     if (!serviceId) {
       return { success: false, errors: [{ field: 'icon', message: 'No service ID provided' }] };
+    }
+
+    // Prevent path traversal and other unsafe values
+    if (!SERVICE_ID_PATTERN.test(serviceId)) {
+      return {
+        success: false,
+        errors: [{ field: 'icon', message: 'Invalid service ID format' }],
+      };
     }
 
     if (!isAllowedImageMime(file.type)) {
