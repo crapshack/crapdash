@@ -178,6 +178,7 @@ export function ServiceForm({ service, categories, onSuccess, onCancel, cacheKey
         <FieldLabel>Icon</FieldLabel>
         <IconPicker
           value={icon}
+          allowImage={true}
           pendingFile={pendingIconFile}
           onValueChange={setIcon}
           onFileSelect={setPendingIconFile}

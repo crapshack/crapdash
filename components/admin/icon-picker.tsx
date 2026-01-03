@@ -8,29 +8,35 @@ import { LucideIconPicker } from './lucide-icon-picker';
 import { EmojiPicker } from './emoji-picker';
 import { ICON_TYPES, type IconConfig, type IconType } from '@/lib/types';
 
-interface IconPickerProps {
+interface IconPickerBaseProps {
   value?: IconConfig;
   onValueChange: (value: IconConfig | undefined) => void;
   onClear: () => void;
-  /** Enable image upload option (default: true) */
-  allowImage?: boolean;
-  /** Required when allowImage is true */
-  pendingFile?: File | null;
-  /** Required when allowImage is true */
-  onFileSelect?: (file: File | null) => void;
   cacheKey?: number;
   disabled?: boolean;
 }
 
+type IconPickerProps =
+  | (IconPickerBaseProps & {
+      allowImage: true;
+      pendingFile: File | null;
+      onFileSelect: (file: File | null) => void;
+    })
+  | (IconPickerBaseProps & {
+      allowImage: false;
+      pendingFile?: never;
+      onFileSelect?: never;
+    });
+
 export function IconPicker(props: IconPickerProps) {
   // Remount the inner picker whenever the external icon type or allowImage toggle changes.
   // This resets local tab state without relying on effects.
-  const { value, allowImage = true } = props;
+  const { value, allowImage } = props;
   const key = useMemo(
     () => `${allowImage ? 'img' : 'noimg'}:${value?.type ?? 'none'}`,
     [allowImage, value?.type]
   );
-  return <IconPickerInner key={key} {...props} allowImage={allowImage} />;
+  return <IconPickerInner key={key} {...props} />;
 }
 
 function IconPickerInner({
@@ -39,7 +45,7 @@ function IconPickerInner({
   onValueChange,
   onFileSelect,
   onClear,
-  allowImage = true,
+  allowImage,
   cacheKey,
   disabled,
 }: IconPickerProps) {
@@ -115,7 +121,7 @@ function IconPickerInner({
         </TabsTrigger>
       </TabsList>
 
-      {allowImage && onFileSelect && (
+      {allowImage && (
         <TabsContent value={ICON_TYPES.IMAGE}>
           <IconUpload
             value={imageValue}
