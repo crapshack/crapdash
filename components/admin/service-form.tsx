@@ -60,8 +60,21 @@ export function ServiceForm({ service, categories, onSuccess, onCancel, cacheKey
     const id = service?.id || serviceId;
     let finalIcon: IconConfig | undefined = icon;
 
-    // Handle icon based on type/pending file
-    if (pendingIconFile) {
+    // Validate non-image selections first
+    if (icon?.type === ICON_TYPES.ICON) {
+      const resolvedName = resolveIconName(icon.value);
+      if (!resolvedName) {
+        setErrors({ icon: `"${icon.value}" is not a valid Lucide icon name` });
+        setIsSubmitting(false);
+        return;
+      }
+      finalIcon = { type: ICON_TYPES.ICON, value: resolvedName };
+    } else if (icon?.type === ICON_TYPES.EMOJI) {
+      finalIcon = icon;
+    }
+
+    // Only upload a pending image file if the user is keeping/choosing an image
+    if (pendingIconFile && (!icon || icon.type === ICON_TYPES.IMAGE)) {
       const uploadedPath = await uploadIcon(pendingIconFile, id);
       if (uploadedPath) {
         finalIcon = { type: ICON_TYPES.IMAGE, value: uploadedPath };
@@ -70,15 +83,6 @@ export function ServiceForm({ service, categories, onSuccess, onCancel, cacheKey
         setIsSubmitting(false);
         return;
       }
-    } else if (icon?.type === ICON_TYPES.ICON) {
-      // Validate and resolve Lucide icon name
-      const resolvedName = resolveIconName(icon.value);
-      if (!resolvedName) {
-        setErrors({ icon: `"${icon.value}" is not a valid Lucide icon name` });
-        setIsSubmitting(false);
-        return;
-      }
-      finalIcon = { type: ICON_TYPES.ICON, value: resolvedName };
     }
 
     const formData = { name, description, url, categoryId, icon: finalIcon, active };

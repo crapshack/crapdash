@@ -34,20 +34,16 @@ export function IconPicker({
 }: IconPickerProps) {
   // Default tab when no value is set
   const defaultTab = allowImage ? ICON_TYPES.IMAGE : ICON_TYPES.ICON;
-  
-  // Local state only used as fallback when value is undefined (user switching tabs)
-  const [selectedTab, setSelectedTab] = useState<IconType>(defaultTab);
-  
-  // Derive the active type: value?.type is authoritative, fallback to local selection
-  const iconType = value?.type ?? selectedTab;
+
+  // Track the active tab independently so switching tabs doesn't clear the current value
+  const [selectedTab, setSelectedTab] = useState<IconType>(value?.type ?? defaultTab);
+
+  const iconType = selectedTab;
 
   const handleTypeChange = (newType: string) => {
     if (!newType) return;
     const type = newType as IconType;
     setSelectedTab(type);
-    // Clear the current value when switching types
-    onFileSelect?.(null);
-    onClear();
   };
 
   const handleImageFileSelect = (file: File | null) => {
