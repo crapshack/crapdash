@@ -19,7 +19,7 @@ const lucideIconSchema = z.object({
   const resolved = resolveLucideIconName(icon.value);
   if (!resolved) {
     ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+      code: 'custom',
       message: `"${icon.value}" is not a valid Lucide icon name`,
       path: ['value'],
     });
