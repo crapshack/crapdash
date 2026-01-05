@@ -21,7 +21,8 @@ Crapdash is a low-frills homepage to manage your links and services. Add names, 
 - **Services**: Save links with names, descriptions, and custom icons
 - **Categories**: Group services into categories with drag-and-drop organization
 - **Admin panel**: Manage services and categories through a simple UI
-- **Search**: Filter services quickly
+- **Search**: Filter services quickly with keyboard shortcuts
+- **Self-hosted**: Run it on your own hardware via Docker or Node.js
 
 ## Installation
 
