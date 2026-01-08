@@ -97,6 +97,14 @@
   --font-sans: ui-sans-serif, system-ui, sans-serif;
   --font-serif: ui-serif, Georgia, serif;
   --font-mono: ui-monospace, monospace;
+  --shadow-2xs: 0 1px 0 0 hsl(220 9% 46% / 0.06);
+  --shadow-xs: 0 1px 2px 0 hsl(220 9% 46% / 0.07);
+  --shadow-sm: 0 1px 3px 0 hsl(220 9% 46% / 0.10), 0 1px 2px -1px hsl(220 9% 46% / 0.10);
+  --shadow: 0 2px 4px -1px hsl(220 9% 46% / 0.12), 0 4px 6px -1px hsl(220 9% 46% / 0.10);
+  --shadow-md: 0 4px 6px -1px hsl(220 9% 46% / 0.13), 0 10px 15px -3px hsl(220 9% 46% / 0.10);
+  --shadow-lg: 0 10px 15px -3px hsl(220 9% 46% / 0.18), 0 4px 6px -2px hsl(220 9% 46% / 0.12);
+  --shadow-xl: 0 20px 25px -5px hsl(220 9% 46% / 0.20), 0 10px 10px -5px hsl(220 9% 46% / 0.12);
+  --shadow-2xl: 0 25px 50px -12px hsl(220 9% 46% / 0.28);
 }
 
 /* These tokens are purely to facilitate the “Default” appearance option in the appearance selector */
@@ -148,6 +156,14 @@
   --sidebar-ring: oklch(0.556 0 0);
   --title-gradient-from: oklch(0.8454 0.0799 356.87);
   --title-gradient-to: oklch(0.9007 0.0544 354.91);
+  --shadow-2xs: 0 1px 0 0 hsl(0 0% 0% / 0.50);
+  --shadow-xs: 0 1px 2px 0 hsl(0 0% 0% / 0.45);
+  --shadow-sm: 0 1px 3px 0 hsl(0 0% 0% / 0.40), 0 1px 2px -1px hsl(0 0% 0% / 0.50);
+  --shadow: 0 2px 4px -1px hsl(0 0% 0% / 0.38), 0 4px 6px -1px hsl(0 0% 0% / 0.36);
+  --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.38), 0 10px 15px -3px hsl(0 0% 0% / 0.32);
+  --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.40), 0 4px 6px -2px hsl(0 0% 0% / 0.36);
+  --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.42), 0 10px 10px -5px hsl(0 0% 0% / 0.34);
+  --shadow-2xl: 0 25px 50px -12px hsl(0 0% 0% / 0.50);
 }
 
 /* ===== MONO APPEARANCE ===== */
