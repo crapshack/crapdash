@@ -99,6 +99,20 @@
   --font-mono: ui-monospace, monospace;
 }
 
+/* These tokens are purely to facilitate the “Default” appearance option in the appearance selector */
+[data-appearance="default"] {
+  --primary: oklch(0.59 0.14 242);
+  --secondary: oklch(0.967 0.001 286.375);
+  --accent: oklch(0.96 0 0);
+}
+
+.dark [data-appearance="default"],
+[data-appearance="default"].dark {
+  --primary: oklch(0.68 0.15 237);
+  --secondary: oklch(0.274 0.006 286.033);
+  --accent: oklch(0.371 0 0);
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

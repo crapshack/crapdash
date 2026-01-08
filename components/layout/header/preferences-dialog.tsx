@@ -24,6 +24,7 @@ import { THEMES, THEME_META } from '@/lib/theme-config';
 import { APPEARANCES, APPEARANCE_META, type Appearance } from '@/lib/appearance-config';
 import { Kbd, ModKbd } from '@/components/ui/kbd';
 import { LAYOUTS, type Preferences } from '@/lib/types';
+import { AppearanceSwatches } from './appearance-swatches';
 
 interface PreferencesDialogProps {
   settings: Preferences;
@@ -36,8 +37,9 @@ interface PreferencesDialogProps {
 }
 
 export function PreferencesDialog({ settings, onSettingChange, open, onOpenChange }: PreferencesDialogProps) {
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
   const [defaultAppearance, ...otherAppearances] = APPEARANCES;
+  const isDark = resolvedTheme === 'dark';
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -74,17 +76,23 @@ export function PreferencesDialog({ settings, onSettingChange, open, onOpenChang
               value={settings.appearance}
               onValueChange={(value) => onSettingChange('appearance', value as Appearance)}
             >
-              <SelectTrigger className="w-42">
+              <SelectTrigger className="w-52">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem key={defaultAppearance} value={defaultAppearance}>
-                  {APPEARANCE_META[defaultAppearance].label}
+                  <div className="flex items-center gap-2">
+                    <AppearanceSwatches appearance={defaultAppearance} isDark={isDark} />
+                    <span>{APPEARANCE_META[defaultAppearance].label}</span>
+                  </div>
                 </SelectItem>
                 <SelectSeparator />
                 {otherAppearances.map((appearance) => (
                   <SelectItem key={appearance} value={appearance}>
-                    {APPEARANCE_META[appearance].label}
+                    <div className="flex items-center gap-2">
+                      <AppearanceSwatches appearance={appearance} isDark={isDark} />
+                      <span>{APPEARANCE_META[appearance].label}</span>
+                    </div>
                   </SelectItem>
                 ))}
               </SelectContent>
