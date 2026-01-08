@@ -7,6 +7,9 @@ import { Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { CategoryIcon } from '@/components/common/icons/category-icon';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,6 +38,8 @@ export function AppSettingsCard({ appTitle, appLogo, onChange }: AppSettingsCard
   const [isLogoSaving, setIsLogoSaving] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
+  const [failedLogoValue, setFailedLogoValue] = useState<string | null>(null);
+  const [loadedLogoValue, setLoadedLogoValue] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const hasTitleChanges = useMemo(() => {
@@ -144,8 +149,11 @@ export function AppSettingsCard({ appTitle, appLogo, onChange }: AppSettingsCard
     setIsSaving(false);
   };
 
-  const customLogoSrc = previewUrl || (logo?.type === ICON_TYPES.IMAGE ? `/api/${logo.value}` : null);
-  const hasCustomLogo = !!customLogoSrc;
+  const currentLogoValue = logo?.type === ICON_TYPES.IMAGE ? logo.value : null;
+  const customLogoSrc = previewUrl || (currentLogoValue ? `/api/${currentLogoValue}` : null);
+  const loadFailed = !previewUrl && !!currentLogoValue && failedLogoValue === currentLogoValue;
+  const isLoaded = previewUrl || (!!currentLogoValue && loadedLogoValue === currentLogoValue);
+  const hasCustomLogo = !!customLogoSrc && !loadFailed;
 
   return (
     <>
@@ -161,13 +169,36 @@ export function AppSettingsCard({ appTitle, appLogo, onChange }: AppSettingsCard
                 className="relative h-14 w-14 rounded-lg overflow-hidden cursor-pointer"
                 onClick={handleLogoClick}
               >
-                <Image
-                  src={customLogoSrc || '/compy.png'}
-                  alt="Logo"
-                  fill
-                  className="object-cover"
-                  unoptimized={!!customLogoSrc}
-                />
+                {loadFailed ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex h-full w-full items-center justify-center rounded-lg border border-dashed border-muted-foreground/50 bg-muted/40 text-muted-foreground/80 shadow-inner">
+                        <CategoryIcon icon={{ type: ICON_TYPES.ICON, value: 'ImageOff' }} className="h-6 w-6" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">Failed to load logo</TooltipContent>
+                  </Tooltip>
+                ) : hasCustomLogo ? (
+                  <>
+                    {!isLoaded && <Skeleton className="absolute inset-0" aria-hidden />}
+                    <Image
+                      src={customLogoSrc}
+                      alt="Logo"
+                      fill
+                      className={cn("object-cover transition-opacity", !isLoaded && "opacity-0")}
+                      unoptimized
+                      onError={() => currentLogoValue && setFailedLogoValue(currentLogoValue)}
+                      onLoad={() => currentLogoValue && setLoadedLogoValue(currentLogoValue)}
+                    />
+                  </>
+                ) : (
+                  <Image
+                    src="/compy.png"
+                    alt="Logo"
+                    fill
+                    className="object-cover"
+                  />
+                )}
                 <div className={cn(
                   "absolute inset-0 bg-black/20 flex items-center justify-center transition-opacity",
                   isHovered ? "opacity-100" : "opacity-0"
@@ -175,7 +206,7 @@ export function AppSettingsCard({ appTitle, appLogo, onChange }: AppSettingsCard
                   <Upload className="h-5 w-5 text-white" />
                 </div>
               </div>
-              {hasCustomLogo && (
+              {(hasCustomLogo || loadFailed) && (
                 <Button
                   type="button"
                   size="icon"

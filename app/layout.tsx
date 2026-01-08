@@ -4,7 +4,6 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeShortcut } from "@/components/theme/theme-shortcut";
 import { Toaster } from "@/components/ui/sonner";
-import { PageFooter } from "@/components/layout/footer/page-footer";
 import { PlatformProvider } from "@/components/providers/platform-provider";
 import { platformFromUserAgent } from "@/lib/platform";
 import { parsePreferences } from "@/lib/preferences";
@@ -62,7 +61,6 @@ export default async function RootLayout({
           <ThemeProvider>
             <ThemeShortcut />
             {children}
-            <PageFooter />
             <Toaster />
           </ThemeProvider>
         </PlatformProvider>

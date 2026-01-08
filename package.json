@@ -8,7 +8,8 @@
     "dev": "next dev -p 2727",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tag:version": "v=$(node -p \"require('./package.json').version\") && git tag v$v && git push origin v$v"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",

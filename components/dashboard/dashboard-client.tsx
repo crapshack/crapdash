@@ -13,6 +13,7 @@ import { PageHeader } from '@/components/layout/header/page-header';
 import { CategoryLayout } from './category-layout';
 import { SearchBar } from '../layout/header/search-bar';
 import { PreferencesDialog } from '../layout/header/preferences-dialog';
+import { PageFooter } from '@/components/layout/footer/page-footer';
 import { AppearanceProvider } from '@/components/theme/appearance-provider';
 import { usePreferences } from '@/hooks/use-preferences';
 import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
@@ -36,6 +37,7 @@ export function DashboardClient({ appTitle, appLogo, categories, services, initi
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { settings, updateSetting } = usePreferences({ initialSettings });
+  const [showFooter, setShowFooter] = useState(false);
 
   // Edit modal state
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -67,6 +69,11 @@ export function DashboardClient({ appTitle, appLogo, categories, services, initi
       },
     },
     { key: '.', mod: true, handler: () => setSettingsOpen((o) => !o) },
+    {
+      key: 'i',
+      mod: true,
+      handler: () => setShowFooter((prev) => !prev),
+    },
   ]);
 
   const filteredData = useMemo(() => {
@@ -235,6 +242,8 @@ export function DashboardClient({ appTitle, appLogo, categories, services, initi
         isDeleting={isDeleting}
         error={deleteError}
       />
+
+      {showFooter && <PageFooter />}
     </AppearanceProvider>
   );
 }

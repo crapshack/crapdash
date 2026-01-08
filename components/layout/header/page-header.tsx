@@ -5,6 +5,10 @@ import Link from "next/link";
 import { useState } from "react";
 import type { IconConfig } from "@/lib/types";
 import { ICON_TYPES } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CategoryIcon } from "@/components/common/icons/category-icon";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PageHeaderProps {
   title: string;
@@ -14,10 +18,25 @@ interface PageHeaderProps {
 }
 
 export function PageHeader({ title, description, children, appLogo }: PageHeaderProps) {
-  const [logoFailed, setLogoFailed] = useState(false);
+  const [failedLogoValue, setFailedLogoValue] = useState<string | null>(null);
+  const [loadedLogoValue, setLoadedLogoValue] = useState<string | null>(null);
 
-  const hasCustomLogo = appLogo?.type === ICON_TYPES.IMAGE && !logoFailed;
-  const logoSrc = hasCustomLogo ? `/api/${appLogo.value}` : undefined;
+  const currentLogoValue = appLogo?.type === ICON_TYPES.IMAGE ? appLogo.value : null;
+  const loadFailed = !!currentLogoValue && failedLogoValue === currentLogoValue;
+  const isLoaded = !!currentLogoValue && loadedLogoValue === currentLogoValue;
+  const hasCustomLogo = !!currentLogoValue;
+  const logoSrc = hasCustomLogo ? `/api/${currentLogoValue}` : undefined;
+
+  const fallbackLogo = (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-dashed border-muted-foreground/50 bg-muted/40 text-muted-foreground/80 shadow-inner">
+          <CategoryIcon icon={{ type: ICON_TYPES.ICON, value: 'ImageOff' }} className="h-6 w-6" />
+        </div>
+      </TooltipTrigger>
+      <TooltipContent side="bottom">Failed to load logo</TooltipContent>
+    </Tooltip>
+  );
 
   return (
     <div className="w-full bg-background border-b border-border">
@@ -26,15 +45,21 @@ export function PageHeader({ title, description, children, appLogo }: PageHeader
           <div className="flex items-center gap-4 shrink-0">
             <Link href="/">
               <div className="relative h-14 w-14 rounded-lg overflow-hidden flex items-center justify-center">
-                {hasCustomLogo ? (
-                  <Image
-                    src={logoSrc!}
-                    alt="App logo"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                    onError={() => setLogoFailed(true)}
-                  />
+                {hasCustomLogo && !loadFailed ? (
+                  <>
+                    {!isLoaded && <Skeleton className="absolute inset-0" aria-hidden />}
+                    <Image
+                      src={logoSrc!}
+                      alt="App logo"
+                      fill
+                      className={cn("object-cover transition-opacity", !isLoaded && "opacity-0")}
+                      unoptimized
+                      onError={() => setFailedLogoValue(currentLogoValue)}
+                      onLoad={() => setLoadedLogoValue(currentLogoValue)}
+                    />
+                  </>
+                ) : loadFailed ? (
+                  fallbackLogo
                 ) : (
                   <Image
                     src="/compy.png"

@@ -22,6 +22,7 @@ import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/
 import { DownloadIcon } from '@/components/ui/animated-icons/download';
 import { DEFAULT_APP_TITLE, type Category, type Service, type Preferences, type IconConfig } from '@/lib/types';
 import { AppSettingsCard } from '@/components/admin/app-settings/app-settings-card';
+import { PageFooter } from '@/components/layout/footer/page-footer';
 
 // Dynamic imports to avoid SSR for drag-and-drop components
 const CategoryList = dynamic(() => import('@/components/admin/categories/category-list').then(m => m.CategoryList), { ssr: false });
@@ -41,6 +42,7 @@ export function AdminClient({ appTitle, appLogo, categories: initialCategories, 
   const [appTitleState, setAppTitleState] = useState<string>(appTitle ?? '');
   const [appLogoState, setAppLogoState] = useState<IconConfig | undefined>(appLogo);
   const { settings, updateSetting } = usePreferences({ initialSettings });
+  const [showFooter, setShowFooter] = useState(false);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [serviceModalOpen, setServiceModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | undefined>();
@@ -64,6 +66,11 @@ export function AdminClient({ appTitle, appLogo, categories: initialCategories, 
       },
     },
     { key: '.', mod: true, handler: () => setSettingsOpen((o) => !o) },
+    {
+      key: 'i',
+      mod: true,
+      handler: () => setShowFooter((prev) => !prev),
+    },
   ]);
 
   const filteredData = useMemo(() => {
@@ -145,7 +152,8 @@ export function AdminClient({ appTitle, appLogo, categories: initialCategories, 
   };
 
   return (
-    <AppearanceProvider appearance={settings.appearance} onAppearanceChange={(appearance) => updateSetting('appearance', appearance)}>
+    <>
+      <AppearanceProvider appearance={settings.appearance} onAppearanceChange={(appearance) => updateSetting('appearance', appearance)}>
       <PageHeader title={adminTitle} appLogo={appLogoState}>
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <Tooltip>
@@ -314,6 +322,9 @@ export function AdminClient({ appTitle, appLogo, categories: initialCategories, 
           cacheKey={refreshKey}
         />
       </main>
-    </AppearanceProvider>
+      </AppearanceProvider>
+
+      {showFooter && <PageFooter />}
+    </>
   );
 }
