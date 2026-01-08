@@ -1,6 +1,6 @@
 {
   "name": "crapdash",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "private": true,
   "license": "MIT",
   "packageManager": "pnpm@9.0.0",
@@ -8,7 +8,8 @@
     "dev": "next dev -p 2727",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tag:version": "v=$(node -p \"require('./package.json').version\") && git tag v$v && git push origin v$v"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",

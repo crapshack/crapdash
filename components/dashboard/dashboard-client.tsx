@@ -13,6 +13,7 @@ import { PageHeader } from '@/components/layout/header/page-header';
 import { CategoryLayout } from './category-layout';
 import { SearchBar } from '../layout/header/search-bar';
 import { PreferencesDialog } from '../layout/header/preferences-dialog';
+import { PageFooter } from '@/components/layout/footer/page-footer';
 import { AppearanceProvider } from '@/components/theme/appearance-provider';
 import { usePreferences } from '@/hooks/use-preferences';
 import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
@@ -21,19 +22,22 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { ServiceFormModal } from '@/components/admin/services/service-form-modal';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { deleteService } from '@/lib/actions';
-import { LAYOUTS, type Category, type Service, type Preferences } from '@/lib/types';
+import { DEFAULT_APP_TITLE, LAYOUTS, type Category, type Service, type Preferences, type IconConfig } from '@/lib/types';
 
 interface DashboardClientProps {
+  appTitle?: string;
+  appLogo?: IconConfig;
   categories: Category[];
   services: Service[];
   initialSettings: Partial<Preferences>;
 }
 
-export function DashboardClient({ categories, services, initialSettings }: DashboardClientProps) {
+export function DashboardClient({ appTitle, appLogo, categories, services, initialSettings }: DashboardClientProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { settings, updateSetting } = usePreferences({ initialSettings });
+  const [showFooter, setShowFooter] = useState(false);
 
   // Edit modal state
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -50,6 +54,7 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
 
   // Settings dialog state
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const titleText = appTitle?.trim() || DEFAULT_APP_TITLE;
 
   useKeyboardShortcuts([
     {
@@ -64,6 +69,11 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
       },
     },
     { key: '.', mod: true, handler: () => setSettingsOpen((o) => !o) },
+    {
+      key: 'i',
+      mod: true,
+      handler: () => setShowFooter((prev) => !prev),
+    },
   ]);
 
   const filteredData = useMemo(() => {
@@ -131,7 +141,7 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
 
   return (
     <AppearanceProvider appearance={settings.appearance} onAppearanceChange={(appearance) => updateSetting('appearance', appearance)}>
-      <PageHeader title="crapdash">
+      <PageHeader title={titleText} appLogo={appLogo}>
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <Tooltip>
           <TooltipTrigger onClick={() => setSettingsOpen(true)}>
@@ -232,6 +242,8 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
         isDeleting={isDeleting}
         error={deleteError}
       />
+
+      {showFooter && <PageFooter />}
     </AppearanceProvider>
   );
 }

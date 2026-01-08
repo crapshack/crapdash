@@ -5,10 +5,51 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { ZodError } from 'zod';
 import { readConfig, writeConfig } from './db';
-import { categorySchema, categoryCreateSchema, serviceSchema, serviceCreateSchema, serviceIdSchema } from './validations';
-import { deleteServiceIcon, isValidImageExtension, getIconFilePath } from './file-utils';
+import { appSettingsSchema, categorySchema, categoryCreateSchema, serviceSchema, serviceCreateSchema, serviceIdSchema } from './validations';
+import { deleteAppLogo, deleteServiceIcon, getAppLogoFilename, getIconFilePath, isValidImageExtension } from './file-utils';
 import { IMAGE_TYPE_ERROR, MAX_FILE_SIZE, isAllowedImageMime } from './image-constants';
-import { ICON_TYPES, type Category, type Service, type ActionResult, type CategoryFormData, type CategoryCreateData, type ServiceFormData, type ServiceCreateData } from './types';
+import { ICON_TYPES, type Category, type Service, type ActionResult, type CategoryFormData, type CategoryCreateData, type ServiceFormData, type ServiceCreateData, type IconConfig } from './types';
+
+function validateImageFile(file: File, fieldName: string): { success: false; errors: { field: string; message: string }[] } | null {
+  if (!isAllowedImageMime(file.type)) {
+    return { success: false, errors: [{ field: fieldName, message: IMAGE_TYPE_ERROR }] };
+  }
+  if (file.size > MAX_FILE_SIZE) {
+    return { success: false, errors: [{ field: fieldName, message: `File too large. Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.` }] };
+  }
+  if (!isValidImageExtension(file.name)) {
+    return { success: false, errors: [{ field: fieldName, message: 'Invalid file extension.' }] };
+  }
+  return null;
+}
+
+async function writeIconFile(file: File, filename: string, baseNameForCleanup: string): Promise<string> {
+  const filePath = getIconFilePath(filename);
+  const iconsDir = path.dirname(filePath);
+  const tempPath = path.join(iconsDir, `${filename}.tmp-${crypto.randomUUID()}`);
+
+  await fs.mkdir(iconsDir, { recursive: true });
+
+  const existingIcons = await fs.readdir(iconsDir).catch(() => []);
+  const oldFiles = existingIcons.filter((f) => path.parse(f).name === baseNameForCleanup && f !== filename);
+
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  try {
+    await fs.writeFile(tempPath, buffer);
+    await fs.rename(tempPath, filePath);
+  } catch (error) {
+    await fs.unlink(tempPath).catch(() => {});
+    throw error;
+  }
+
+  for (const oldFile of oldFiles) {
+    await fs.unlink(path.join(iconsDir, oldFile)).catch(() => {});
+  }
+
+  return `icons/${filename}`;
+}
 
 export async function uploadServiceIcon(formData: FormData): Promise<ActionResult<string>> {
   try {
@@ -23,7 +64,6 @@ export async function uploadServiceIcon(formData: FormData): Promise<ActionResul
       return { success: false, errors: [{ field: 'icon', message: 'No service ID provided' }] };
     }
 
-    // Prevent path traversal and other unsafe values
     const idValidation = serviceIdSchema.safeParse(serviceId);
     if (!idValidation.success) {
       return {
@@ -32,57 +72,97 @@ export async function uploadServiceIcon(formData: FormData): Promise<ActionResul
       };
     }
 
-    if (!isAllowedImageMime(file.type)) {
-      return { success: false, errors: [{ field: 'icon', message: IMAGE_TYPE_ERROR }] };
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      return { success: false, errors: [{ field: 'icon', message: `File too large. Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.` }] };
-    }
+    const validationError = validateImageFile(file, 'icon');
+    if (validationError) return validationError;
 
     const ext = path.extname(file.name).toLowerCase();
-    if (!isValidImageExtension(file.name)) {
-      return { success: false, errors: [{ field: 'icon', message: 'Invalid file extension.' }] };
-    }
-
     const filename = `${serviceId}${ext}`;
-    const filePath = getIconFilePath(filename);
-    const iconsDir = path.dirname(filePath);
-    const tempPath = path.join(iconsDir, `${filename}.tmp-${crypto.randomUUID()}`);
-
-    // Ensure icons directory exists (may not exist if volume is mounted)
-    await fs.mkdir(iconsDir, { recursive: true });
-
-    // Record any existing icons for this service (to clean after successful write)
-    const existingIcons = await fs.readdir(iconsDir).catch(() => []);
-    const oldIconFiles = existingIcons.filter((file) => {
-      const nameWithoutExt = path.parse(file).name;
-      return nameWithoutExt === serviceId && file !== filename;
-    });
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    
-    try {
-      await fs.writeFile(tempPath, buffer);
-      await fs.rename(tempPath, filePath);
-    } catch (error) {
-      // Clean up temp file on failure
-      await fs.unlink(tempPath).catch(() => {});
-      throw error;
-    }
-
-    // Remove previous icons only after the new one is safely in place
-    for (const oldFile of oldIconFiles) {
-      await fs.unlink(path.join(iconsDir, oldFile)).catch(() => {});
-    }
-
-    const iconPath = `icons/${filename}`;
+    const iconPath = await writeIconFile(file, filename, serviceId);
 
     return { success: true, data: iconPath };
   } catch (error) {
     console.error('Upload error:', error);
     return { success: false, errors: [{ field: 'icon', message: 'Failed to upload file' }] };
+  }
+}
+
+export async function uploadAppLogo(formData: FormData): Promise<ActionResult<string>> {
+  try {
+    const file = formData.get('file') as File;
+
+    if (!file) {
+      return { success: false, errors: [{ field: 'appLogo', message: 'No file provided' }] };
+    }
+
+    const validationError = validateImageFile(file, 'appLogo');
+    if (validationError) return validationError;
+
+    const ext = path.extname(file.name).toLowerCase();
+    const filename = getAppLogoFilename(ext);
+    const baseName = path.parse(filename).name;
+    const iconPath = await writeIconFile(file, filename, baseName);
+
+    return { success: true, data: iconPath };
+  } catch (error) {
+    console.error('Upload app logo error:', error);
+    return { success: false, errors: [{ field: 'appLogo', message: 'Failed to upload file' }] };
+  }
+}
+
+type AppSettingsInput = {
+  appTitle?: string | null;
+  appLogo?: IconConfig | null;
+};
+
+export async function updateAppSettings(data: AppSettingsInput): Promise<ActionResult<{ appTitle?: string; appLogo?: IconConfig }>> {
+  try {
+    const validated = appSettingsSchema.parse(data);
+    const config = await readConfig();
+
+    const previousAppLogoPath =
+      config.appLogo?.type === ICON_TYPES.IMAGE ? config.appLogo.value : undefined;
+
+    const nextConfig = { ...config };
+
+    if ('appTitle' in validated) {
+      const trimmed = validated.appTitle?.trim();
+      nextConfig.appTitle = trimmed || undefined;
+    }
+
+    const appLogoProvided = Object.hasOwn(data, 'appLogo');
+    if (appLogoProvided) {
+      const incomingLogo = validated.appLogo;
+      if (incomingLogo === null) {
+        nextConfig.appLogo = undefined;
+        if (previousAppLogoPath) {
+          await deleteAppLogo(previousAppLogoPath);
+        }
+      } else if (incomingLogo !== undefined) {
+        nextConfig.appLogo = incomingLogo;
+      }
+    }
+
+    await writeConfig(nextConfig);
+
+    revalidatePath('/');
+    revalidatePath('/admin');
+
+    return { success: true, data: { appTitle: nextConfig.appTitle, appLogo: nextConfig.appLogo } };
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return {
+        success: false,
+        errors: error.issues.map((issue) => ({
+          field: issue.path.join('.'),
+          message: issue.message,
+        })),
+      };
+    }
+    console.error('Update app settings error:', error);
+    return {
+      success: false,
+      errors: [{ field: 'general', message: 'Failed to update app settings' }],
+    };
   }
 }
 

@@ -3,6 +3,7 @@ import path from 'path';
 import { isAllowedImageExtension } from './image-constants';
 
 const ICONS_DIR = path.join(process.cwd(), 'data', 'icons');
+const APP_LOGO_BASENAME = 'app-logo';
 
 /**
  * Deletes all icon files for a given service ID
@@ -61,4 +62,23 @@ export function isValidImageExtension(filename: string): boolean {
  */
 export function getIconFilePath(filename: string): string {
   return path.join(ICONS_DIR, filename);
+}
+
+/**
+ * Deletes the stored app logo file at the given config path (e.g., "icons/foo.png").
+ */
+export async function deleteAppLogo(iconPath: string): Promise<void> {
+  const filePath = path.join(ICONS_DIR, path.basename(iconPath));
+  try {
+    await fs.unlink(filePath).catch(() => {});
+  } catch (error) {
+    console.error('Error deleting app logo:', error);
+  }
+}
+
+/**
+ * Gets the target filename for the app logo with the provided extension
+ */
+export function getAppLogoFilename(ext: string): string {
+  return `${APP_LOGO_BASENAME}${ext}`;
 }

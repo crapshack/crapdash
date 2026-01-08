@@ -4,11 +4,10 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeShortcut } from "@/components/theme/theme-shortcut";
 import { Toaster } from "@/components/ui/sonner";
-import { PageFooter } from "@/components/layout/footer/page-footer";
 import { PlatformProvider } from "@/components/providers/platform-provider";
 import { platformFromUserAgent } from "@/lib/platform";
 import { parsePreferences } from "@/lib/preferences";
-import { PREFERENCES_COOKIE_NAME } from "@/lib/types";
+import { DEFAULT_APP_TITLE, PREFERENCES_COOKIE_NAME } from "@/lib/types";
 import { DEFAULT_APPEARANCE, RANDOM_APPEARANCE, getRandomAppearance } from "@/lib/appearance-config";
 import "./globals.css";
 
@@ -25,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "crapdash",
+  title: DEFAULT_APP_TITLE,
   description: "dashboard for u",
 };
 
@@ -62,7 +61,6 @@ export default async function RootLayout({
           <ThemeProvider>
             <ThemeShortcut />
             {children}
-            <PageFooter />
             <Toaster />
           </ThemeProvider>
         </PlatformProvider>
