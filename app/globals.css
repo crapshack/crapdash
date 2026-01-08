@@ -170,9 +170,9 @@
   --sidebar-accent-foreground: oklch(0.2046 0 0);
   --sidebar-border: oklch(0.9219 0 0);
   --sidebar-ring: oklch(0.7090 0 0);
-  --font-sans: "Geist Mono", ui-monospace, monospace;
-  --font-serif: "Geist Mono", ui-monospace, monospace;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-sans: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-geist-mono), ui-monospace, monospace;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --radius: 0rem;
   --title-gradient-from: oklch(0.4 0 0);
   --title-gradient-to: oklch(0.6 0 0);

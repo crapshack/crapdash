@@ -49,11 +49,13 @@ export default async function RootLayout({
   const initialAppearance = initialPreferences.appearance ?? DEFAULT_APPEARANCE;
 
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body
-        data-appearance={initialAppearance === DEFAULT_APPEARANCE ? undefined : initialAppearance}
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html
+      lang="en"
+      className={`${inter.variable} ${geistSans.variable} ${geistMono.variable}`}
+      data-appearance={initialAppearance === DEFAULT_APPEARANCE ? undefined : initialAppearance}
+      suppressHydrationWarning
+    >
+      <body className="antialiased">
         <PlatformProvider value={platformDefault}>
           <ThemeProvider>
             <ThemeShortcut />
