@@ -72,7 +72,7 @@ export function PreferencesDialog({ settings, onSettingChange, open, onOpenChang
               value={settings.appearance}
               onValueChange={(value) => onSettingChange('appearance', value as Appearance)}
             >
-              <SelectTrigger className="w-32">
+              <SelectTrigger className="w-42">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
