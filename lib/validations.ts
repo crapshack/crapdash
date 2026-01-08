@@ -12,7 +12,7 @@ export const serviceIdSchema = slugSchema;
 
 const baseIconValue = z.string().trim().min(1, 'Icon value is required');
 
-const imageIconSchema = z.object({
+export const imageIconSchema = z.object({
   type: z.literal(ICON_TYPES.IMAGE),
   value: baseIconValue.regex(
     /^icons\/[A-Za-z0-9._-]+$/,
@@ -73,6 +73,17 @@ export const serviceSchema = z.object({
 
 export const serviceCreateSchema = serviceSchema.extend({
   id: serviceIdSchema,
+});
+
+export const appSettingsSchema = z.object({
+  appTitle: z
+    .string()
+    .trim()
+    .min(1, 'App title is required')
+    .max(30, 'App title must be less than 30 characters')
+    .nullable()
+    .optional(),
+  appLogo: imageIconSchema.nullable().optional(),
 });
 
 export type CategoryInput = z.infer<typeof categorySchema>;

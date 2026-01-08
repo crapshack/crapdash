@@ -9,6 +9,7 @@ export type DashboardLayout = typeof LAYOUTS[keyof typeof LAYOUTS];
 
 export const DEFAULT_LAYOUT: DashboardLayout = LAYOUTS.ROWS;
 export const PREFERENCES_COOKIE_NAME = 'preferences';
+export const DEFAULT_APP_TITLE = 'crapdash';
 
 export interface Preferences {
   layout: DashboardLayout;
@@ -52,6 +53,8 @@ export interface Service {
 }
 
 export interface DashboardConfig {
+  appTitle?: string;
+  appLogo?: IconConfig;
   categories: Category[];
   services: Service[];
 }

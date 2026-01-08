@@ -20,21 +20,26 @@ import { CategoryFormModal } from '@/components/admin/categories/category-form-m
 import { ServiceFormModal } from '@/components/admin/services/service-form-modal';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from '@/components/ui/empty';
 import { DownloadIcon } from '@/components/ui/animated-icons/download';
-import type { Category, Service, Preferences } from '@/lib/types';
+import { DEFAULT_APP_TITLE, type Category, type Service, type Preferences, type IconConfig } from '@/lib/types';
+import { AppSettingsCard } from '@/components/admin/app-settings/app-settings-card';
 
 // Dynamic imports to avoid SSR for drag-and-drop components
 const CategoryList = dynamic(() => import('@/components/admin/categories/category-list').then(m => m.CategoryList), { ssr: false });
 const ServiceList = dynamic(() => import('@/components/admin/services/service-list').then(m => m.ServiceList), { ssr: false });
 
 interface AdminClientProps {
+  appTitle?: string;
+  appLogo?: IconConfig;
   categories: Category[];
   services: Service[];
   initialSettings: Partial<Preferences>;
 }
 
-export function AdminClient({ categories: initialCategories, services: initialServices, initialSettings }: AdminClientProps) {
+export function AdminClient({ appTitle, appLogo, categories: initialCategories, services: initialServices, initialSettings }: AdminClientProps) {
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [services, setServices] = useState<Service[]>(initialServices);
+  const [appTitleState, setAppTitleState] = useState<string>(appTitle ?? '');
+  const [appLogoState, setAppLogoState] = useState<IconConfig | undefined>(appLogo);
   const { settings, updateSetting } = usePreferences({ initialSettings });
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [serviceModalOpen, setServiceModalOpen] = useState(false);
@@ -44,6 +49,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
   const [refreshKey, setRefreshKey] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const adminTitle = `${(appTitleState?.trim() || DEFAULT_APP_TITLE)} /admin`;
 
   useKeyboardShortcuts([
     {
@@ -140,7 +146,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
 
   return (
     <AppearanceProvider appearance={settings.appearance} onAppearanceChange={(appearance) => updateSetting('appearance', appearance)}>
-      <PageHeader title="crapdash /admin">
+      <PageHeader title={adminTitle} appLogo={appLogoState}>
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <Tooltip>
           <TooltipTrigger>
@@ -183,6 +189,21 @@ export function AdminClient({ categories: initialCategories, services: initialSe
 
       <main className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
         <div className="space-y-10">
+          {/* App Header Settings */}
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold font-mono">App Header</h2>
+            </div>
+            <AppSettingsCard
+              appTitle={appTitleState}
+              appLogo={appLogoState}
+              onChange={(nextTitle, nextLogo) => {
+                setAppTitleState(nextTitle ?? '');
+                setAppLogoState(nextLogo);
+              }}
+            />
+          </section>
+
           {/* Categories Section */}
           <section>
             <div className="flex items-center justify-between mb-4">
@@ -273,6 +294,7 @@ export function AdminClient({ categories: initialCategories, services: initialSe
               />
             )}
           </section>
+
         </div>
 
         {/* Modals */}

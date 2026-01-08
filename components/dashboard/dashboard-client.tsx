@@ -21,15 +21,17 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { ServiceFormModal } from '@/components/admin/services/service-form-modal';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { deleteService } from '@/lib/actions';
-import { LAYOUTS, type Category, type Service, type Preferences } from '@/lib/types';
+import { DEFAULT_APP_TITLE, LAYOUTS, type Category, type Service, type Preferences, type IconConfig } from '@/lib/types';
 
 interface DashboardClientProps {
+  appTitle?: string;
+  appLogo?: IconConfig;
   categories: Category[];
   services: Service[];
   initialSettings: Partial<Preferences>;
 }
 
-export function DashboardClient({ categories, services, initialSettings }: DashboardClientProps) {
+export function DashboardClient({ appTitle, appLogo, categories, services, initialSettings }: DashboardClientProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -50,6 +52,7 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
 
   // Settings dialog state
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const titleText = appTitle?.trim() || DEFAULT_APP_TITLE;
 
   useKeyboardShortcuts([
     {
@@ -131,7 +134,7 @@ export function DashboardClient({ categories, services, initialSettings }: Dashb
 
   return (
     <AppearanceProvider appearance={settings.appearance} onAppearanceChange={(appearance) => updateSetting('appearance', appearance)}>
-      <PageHeader title="crapdash">
+      <PageHeader title={titleText} appLogo={appLogo}>
         <SearchBar ref={searchInputRef} value={searchQuery} onChange={setSearchQuery} />
         <Tooltip>
           <TooltipTrigger onClick={() => setSettingsOpen(true)}>

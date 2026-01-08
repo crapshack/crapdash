@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { DEFAULT_APP_TITLE } from "@/lib/types";
 
 export function PageFooter() {
   const version = process.env.NEXT_PUBLIC_APP_VERSION;
@@ -23,7 +24,7 @@ export function PageFooter() {
             />
           </a>
         </Button>
-        <span>crapdash {version}</span>
+        <span>{DEFAULT_APP_TITLE} {version}</span>
       </div>
     </footer>
   );

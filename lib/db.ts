@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import type { Category, Service, DashboardConfig } from './types';
+import type { Category, Service, DashboardConfig, IconConfig } from './types';
 
 const CONFIG_PATH = path.join(process.cwd(), 'data', 'config.json');
 
@@ -59,4 +59,9 @@ export async function getServicesByCategoryId(categoryId: string): Promise<Servi
 export async function getServiceById(id: string): Promise<Service | null> {
   const services = await getServices();
   return services.find(service => service.id === id) || null;
+}
+
+export async function getAppSettings(): Promise<{ appTitle?: string; appLogo?: IconConfig }> {
+  const config = await readConfig();
+  return { appTitle: config.appTitle, appLogo: config.appLogo };
 }
