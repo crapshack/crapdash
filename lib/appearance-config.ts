@@ -1,5 +1,7 @@
 export const APPEARANCE_META = {
   default: { label: 'Default' },
+  bubblegum: { label: 'Bubblegum' },
+  claymorphism: { label: 'Claymorphism' },
   mono: { label: 'Mono' },
   'neo-brutalism': { label: 'Neo Brutalism' },
   perpetuity: { label: 'Perpetuity' },
