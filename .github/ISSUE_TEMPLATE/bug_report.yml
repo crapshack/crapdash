@@ -26,13 +26,6 @@ body:
         2.
         3.
 
-  - type: input
-    id: environment
-    attributes:
-      label: Environment
-      description: Include the Crapdash version, installation method, browser and version, and host OS when known.
-      placeholder: Crapdash 1.4.0, Docker, Firefox 140, Ubuntu 24.04
-
   - type: textarea
     id: evidence
     attributes:
