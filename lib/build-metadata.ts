@@ -1,4 +1,4 @@
-export interface LocalBuildMetadata {
+export interface BuildMetadata {
   branch: string;
   builtAt: string;
   commitSha: string;
@@ -6,7 +6,7 @@ export interface LocalBuildMetadata {
   dirty: boolean;
 }
 
-interface LocalBuildMetadataInput {
+interface BuildMetadataInput {
   branch: string | undefined;
   builtAt: string | undefined;
   commitSha: string | undefined;
@@ -18,8 +18,8 @@ const COMMIT_SHA_PATTERN = /^[0-9a-f]{7,64}$/i;
 const ISO_8601_TIMESTAMP_PATTERN =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 
-export function readLocalBuildMetadata(): LocalBuildMetadata {
-  return parseLocalBuildMetadata({
+export function readBuildMetadata(): BuildMetadata {
+  return parseBuildMetadata({
     branch: process.env.APP_BUILD_BRANCH,
     builtAt: process.env.APP_BUILD_AT,
     commitSha: process.env.APP_BUILD_COMMIT_SHA,
@@ -28,7 +28,7 @@ export function readLocalBuildMetadata(): LocalBuildMetadata {
   });
 }
 
-export function parseLocalBuildMetadata(input: LocalBuildMetadataInput): LocalBuildMetadata {
+export function parseBuildMetadata(input: BuildMetadataInput): BuildMetadata {
   const branch = requireValue("APP_BUILD_BRANCH", input.branch);
   const builtAt = requireValue("APP_BUILD_AT", input.builtAt);
   const commitSha = requireValue("APP_BUILD_COMMIT_SHA", input.commitSha);

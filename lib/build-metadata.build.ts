@@ -1,17 +1,17 @@
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { parseLocalBuildMetadata } from "./local-build-metadata";
+import { parseBuildMetadata } from "./build-metadata";
 
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 
-export function discoverLocalBuildMetadata() {
+export function discoverBuildMetadata() {
   const branch = runGit(["branch", "--show-current"]);
 
   if (!branch) {
-    throw new Error("Local development requires an attached Git branch");
+    throw new Error("The development server requires an attached Git branch");
   }
 
-  return parseLocalBuildMetadata({
+  return parseBuildMetadata({
     branch,
     builtAt: new Date().toISOString(),
     commitSha: runGit(["rev-parse", "HEAD"]),

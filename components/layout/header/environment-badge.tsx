@@ -8,22 +8,22 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-  readLocalBuildMetadata,
-  type LocalBuildMetadata,
-} from "@/lib/local-build-metadata";
+  readBuildMetadata,
+  type BuildMetadata,
+} from "@/lib/build-metadata";
 
 const HOVER_OPEN_DELAY_MS = 200;
 const HOVER_CLOSE_DELAY_MS = 150;
 
-export function LocalEnvironmentBadge() {
+export function EnvironmentBadge() {
   if (process.env.NODE_ENV !== "development") {
     return null;
   }
 
-  return <DevelopmentBadge metadata={readLocalBuildMetadata()} />;
+  return <DevelopmentBadge metadata={readBuildMetadata()} />;
 }
 
-function DevelopmentBadge({ metadata }: { metadata: LocalBuildMetadata }) {
+function DevelopmentBadge({ metadata }: { metadata: BuildMetadata }) {
   const [open, setOpen] = React.useState(false);
   const openSource = React.useRef<"explicit" | "hover" | null>(null);
   const openTimer = React.useRef<number | null>(null);
@@ -106,12 +106,12 @@ function DevelopmentBadge({ metadata }: { metadata: LocalBuildMetadata }) {
       <Badge asChild variant="outline" className="max-w-28 rounded-sm font-mono">
         <PopoverTrigger
           type="button"
-          aria-label="Local development environment. Show build details"
+          aria-label="Development environment. Show build details"
           onClick={pinHoveredPopover}
           onPointerEnter={openOnHover}
           onPointerLeave={closeAfterHover}
         >
-          <span className="truncate">LOCAL</span>
+          <span className="truncate">DEV</span>
         </PopoverTrigger>
       </Badge>
       <PopoverContent
@@ -134,13 +134,13 @@ function DevelopmentBadge({ metadata }: { metadata: LocalBuildMetadata }) {
           }
         }}
       >
-        <LocalBuildDetails metadata={metadata} />
+        <BuildDetails metadata={metadata} />
       </PopoverContent>
     </Popover>
   );
 }
 
-export function LocalBuildDetails({ metadata }: { metadata: LocalBuildMetadata }) {
+export function BuildDetails({ metadata }: { metadata: BuildMetadata }) {
   const builtAt = new Date(metadata.builtAt);
   const builtAtLabel = new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",

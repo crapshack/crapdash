@@ -1,26 +1,38 @@
+import { describe, expect, it, vi } from "vitest";
 import {
   PHASE_DEVELOPMENT_SERVER,
   PHASE_PRODUCTION_BUILD,
 } from "next/constants";
-import { describe, expect, it } from "vitest";
 import createNextConfig from "@/next.config";
 import packageJson from "@/package.json";
 
-describe("next config local build metadata", () => {
+const buildMetadata = vi.hoisted(() => ({
+  branch: "environment-badge",
+  builtAt: "2026-08-07T07:15:00.000Z",
+  commitSha: "98556cc1d4a18439855616c0b86e4eaa6b5d2821",
+  commitSubject: "Add environment badge details",
+  dirty: true,
+}));
+
+vi.mock("@/lib/build-metadata.build", () => ({
+  discoverBuildMetadata: vi.fn(() => buildMetadata),
+}));
+
+describe("next config build metadata", () => {
   it("embeds Git metadata for the development server", () => {
     const config = createNextConfig(PHASE_DEVELOPMENT_SERVER);
 
-    expect(config.env).toMatchObject({
+    expect(config.env).toEqual({
       NEXT_PUBLIC_APP_VERSION: packageJson.version,
-      APP_BUILD_BRANCH: expect.any(String),
-      APP_BUILD_AT: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
-      APP_BUILD_COMMIT_SHA: expect.stringMatching(/^[0-9a-f]{40}$/),
-      APP_BUILD_COMMIT_SUBJECT: expect.any(String),
-      APP_BUILD_DIRTY: expect.stringMatching(/^(?:true|false)$/),
+      APP_BUILD_BRANCH: buildMetadata.branch,
+      APP_BUILD_AT: buildMetadata.builtAt,
+      APP_BUILD_COMMIT_SHA: buildMetadata.commitSha,
+      APP_BUILD_COMMIT_SUBJECT: buildMetadata.commitSubject,
+      APP_BUILD_DIRTY: String(buildMetadata.dirty),
     });
   });
 
-  it("excludes local Git metadata from production builds", () => {
+  it("excludes Git metadata from production builds", () => {
     const config = createNextConfig(PHASE_PRODUCTION_BUILD);
 
     expect(config.env).toEqual({

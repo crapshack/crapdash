@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CategoryIcon } from "@/components/common/icons/category-icon";
 import { Skeleton } from "@/components/ui/skeleton";
-import { LocalEnvironmentBadge } from "@/components/layout/header/local-environment-badge";
+import { EnvironmentBadge } from "@/components/layout/header/environment-badge";
 
 interface PageHeaderProps {
   title: string;
@@ -81,7 +81,7 @@ export function PageHeader({ title, description, children, appLogo }: PageHeader
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-4xl font-bold font-mono text-gradient-title">{title}</h1>
-                <LocalEnvironmentBadge />
+                <EnvironmentBadge />
               </div>
               {description && (
                 <p className="text-muted-foreground mt-2">{description}</p>
