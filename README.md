@@ -61,7 +61,7 @@ Download and run the latest prebuilt bundle if you want a quick Node deploy with
 
 ```bash
 cd /path/to/crapdash
-PORT=2727 node .next/standalone/server.js
+PORT=2727 node server.js
 ```
 
 Consider using a process manager (e.g., pm2, systemd, launchd, NSSM) and a reverse proxy (nginx, Caddy, etc.).
