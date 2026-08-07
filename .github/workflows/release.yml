@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
@@ -21,7 +21,7 @@ jobs:
           run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: "pnpm"
@@ -34,16 +34,11 @@ jobs:
 
       - name: Prepare release bundle
         run: |
-          rm -rf release
-          mkdir -p release/public
-          cp -r .next/standalone .next/static release/
-          cp .next/required-server-files.json release/
-          cp public/compy.png public/github-mark.svg release/public/
+          cp -r public .next/standalone/
+          cp -r .next/static .next/standalone/.next/
 
       - name: Create release archive
-        run: |
-          cd release
-          zip -r "../crapdash-${{ github.ref_name }}.zip" .
+        run: tar -czf "crapdash-${{ github.ref_name }}.tar.gz" -C .next/standalone .
 
       - name: Create GitHub Release
         env:
@@ -52,4 +47,4 @@ jobs:
           gh release create ${{ github.ref_name }} \
             --title "${{ github.ref_name }}" \
             --generate-notes \
-            crapdash-${{ github.ref_name }}.zip
+            crapdash-${{ github.ref_name }}.tar.gz
