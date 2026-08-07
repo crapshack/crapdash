@@ -38,7 +38,7 @@ function RowsCategory({ chips }: { chips: number }) {
   return (
     <div className="flex flex-col gap-1.5">
       <div className="h-2.5 w-14 rounded-sm bg-border/80" />
-      <div className={cn('grid gap-1', chips === 3 ? 'grid-cols-3' : 'grid-cols-2')}>
+      <div className="grid grid-cols-3 gap-1">
         {Array.from({ length: chips }).map((_, i) => (
           <div key={i} className="h-2.5 rounded-sm bg-muted-foreground/30" />
         ))}
